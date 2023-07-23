@@ -3,7 +3,10 @@
   <component name="CheckStyle-IDEA" serialisationVersion="2">
     <checkstyleVersion>10.7.0</checkstyleVersion>
     <scanScope>JavaOnly</scanScope>
+<<<<<<< HEAD
     <copyLibs>true</copyLibs>
+=======
+>>>>>>> AimeeBranch
     <option name="thirdPartyClasspath" />
     <option name="activeLocationIds" />
     <option name="locations">
