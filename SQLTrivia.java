@@ -55,14 +55,29 @@ public class SQLTrivia {
         }
         System.out.println( "Created questions table successfully" );
 
-        //next insert two rows of data
-        System.out.println( "Attempting to insert two rows into questions table" );
-
+//        //next insert two rows of data
+//        System.out.println( "Attempting to insert two rows into questions table" );
+//
+//        String query1 = "INSERT INTO questions ( QUESTION, ANSWER ) VALUES ( 'Last name of Java creator?', 'Gosling' )";
+//        String query2 = "INSERT INTO questions ( QUESTION, ANSWER ) VALUES ( 'This statement is false', 'paradox' )";
+//
+//        try ( Connection conn = ds.getConnection();
+//              Statement stmt = conn.createStatement(); ) {
+//            int rv = stmt.executeUpdate( query1 );
+//            System.out.println( "1st executeUpdate() returned " + rv );
+//
+//            rv = stmt.executeUpdate( query2 );
+//            System.out.println( "2nd executeUpdate() returned " + rv );
+//        } catch ( SQLException e ) {
+//            e.printStackTrace();
+//            System.exit( 0 );
+//        }
 
 
         //now query the database table for all its contents and display the results
         System.out.println( "Selecting all rows from questions table" );
-        query = "SELECT * FROM questions";
+        query = "SELECT * FROM questions ORDER BY RANDOM() LIMIT 1";
+
 
         try ( Connection conn = ds.getConnection();
               Statement stmt = conn.createStatement(); ) {
@@ -71,13 +86,15 @@ public class SQLTrivia {
 
             //walk through each 'row' of results, grab data by column/field name
             // and print it
-            while ( rs.next() ) {
-                String question = rs.getString( "QUESTION" );
-                String answer = rs.getString( "CorrectOption" );
+            // Remove the while loop and use if condition instead
+            if (rs.next()) {
+                String question = rs.getString("QUESTION");
+                String answer = rs.getString("ANSWER");
 
-                System.out.println( "Result: Question = " + question +
-                        ", Answer = " + answer );
+                System.out.println("Result: Question = " + question +
+                        ", Answer = " + answer);
             }
+
         } catch ( SQLException e ) {
             e.printStackTrace();
             System.exit( 0 );
