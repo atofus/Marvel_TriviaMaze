@@ -104,8 +104,8 @@ public class Display extends JPanel {
     public void createQuestionLayout() {
         textField = new JTextField();
         textField.setBounds(4,4,4,4);
-        Question question = new Question("What is Spiderman real name", "Frank Clark",
-                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
+//        Question question = new Question("What is Spiderman real name", "Frank Clark",
+//                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
 
 
     }
