@@ -162,8 +162,8 @@ public class Display extends JPanel {
         mySouthDoor.setBackground(Color.RED);
         mySouthDoor.setBounds(545, 219, 35, 35);
         if (!myMaze.display(Direction.SOUTH) ||
-                (myMaze.getRoom().getDoor(Room.NORTH_INDEX) != null
-                        && myMaze.getRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())) {  //&& myMaze.getDoor()) {
+                (myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX) != null
+                        && myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())) {  //&& myMaze.getDoor()) {
             mySouthDoor.setBackground(Color.GRAY);
             mySouthDoor.setEnabled(false);
         } else {

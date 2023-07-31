@@ -116,7 +116,7 @@ public class Maze {
         myY = theY;
     }
 
-    public Room getRoom() {
+    public Room getCurrentRoom() {
         return myMaze[myX][myY];
     }
 
@@ -127,6 +127,14 @@ public class Maze {
 
     public boolean gameFinished() {
         return myX == rows - 1 && myY == columns - 1;
+    }
+
+    public Room getRoom(final int theIndexX, final int theIndexY) {
+        if (theIndexX >= myMaze.length || theIndexY >= myMaze.length) {
+            throw new IllegalArgumentException("Index out of bounds: "
+                    + theIndexX + " and " + theIndexY);
+        }
+        return myMaze[theIndexX][theIndexY];
     }
 
     public boolean display (Direction myDir) {
@@ -178,20 +186,20 @@ public class Maze {
             return;
         }
 
-        if (myDir == Direction.NORTH && myMaze[myX][myY].getDoor(Room.NORTH_INDEX) != null && myMaze[myX][myY].getDoor(Room.NORTH_INDEX).getLock()) {
+        if (myDir == Direction.NORTH && myMaze[myX][myY].getDoor(Room.NORTH_INDEX) != null && !myMaze[myX][myY].getDoor(Room.NORTH_INDEX).getLock()) {
             setLocation(myX, myY - 1);
         }
 
-        if (myDir == Direction.EAST && myMaze[myX][myY].getDoor(Room.EAST_INDEX) != null && myMaze[myX][myY].getDoor(Room.EAST_INDEX).getLock()) {
+        if (myDir == Direction.EAST && myMaze[myX][myY].getDoor(Room.EAST_INDEX) != null && !myMaze[myX][myY].getDoor(Room.EAST_INDEX).getLock()) {
             setLocation(myX + 1, myY);
         }
 
-        if (myDir == Direction.SOUTH && myMaze[myX][myY].getDoor(Room.SOUTH_INDEX) != null && myMaze[myX][myY].getDoor(Room.SOUTH_INDEX).getLock()) {
+        if (myDir == Direction.SOUTH && myMaze[myX][myY].getDoor(Room.SOUTH_INDEX) != null && !myMaze[myX][myY].getDoor(Room.SOUTH_INDEX).getLock()) {
             setLocation(myX, myY + 1);
             //System.out.println("SOUTH getting called?");
         }
 
-        if (myDir == Direction.WEST && myMaze[myX][myY].getDoor(Room.WEST_INDEX) != null && myMaze[myX][myY].getDoor(Room.WEST_INDEX).getLock()) {
+        if (myDir == Direction.WEST && myMaze[myX][myY].getDoor(Room.WEST_INDEX) != null && !myMaze[myX][myY].getDoor(Room.WEST_INDEX).getLock()) {
             setLocation(myX - 1, myY);
         }
 
