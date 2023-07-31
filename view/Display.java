@@ -22,14 +22,15 @@ public class Display extends JPanel {
  //   private Player myPlayer = new Player();
     private ImageIcon playerIcon;
     private JTextField textField;
-    private JMenu myFile;
-    private JMenuItem mySave;
-    private JMenuItem myLoad;
-    private JMenuItem myExit;
-    private JMenu myHelp;
-    private JMenuItem myAbout;
-    private JMenuItem myInstructions;
-    private JMenuBar myJMenuBar;
+    private ImageIcon lockIcon;
+    private JTextArea myJTextArea = new JTextArea();
+    private JTextField myJTextField = new JTextField();
+
+    private JLabel answer_labelA = new JLabel();
+    private JLabel answer_labelB = new JLabel();
+    private JLabel answer_labelC = new JLabel();
+    private JLabel answer_labelD = new JLabel();
+    private int myQuestionNumber = 1;
 
 
 
@@ -206,62 +207,383 @@ public class Display extends JPanel {
         add(myEastDoor);
     }
 
-
     public void addListeners() {
         int size = myMaze.getMaze().length - 1; //to make sure door is disabled if we're at edge
-       // super.paint(g);
+        // super.paint(g);
         //myMaze.display();
         Room [][] myMazeRoom = myMaze.getMaze();
+        //correct = false;
         myNorthDoor.addActionListener(e -> {
-//            if (!myMazeRoom[myMaze.getY()][myMaze.getX()].getDoor(Room.NORTH_INDEX).getLock()) { //if the door isn't locked we could just move the player through it.
-//                myMaze.setY(myMaze.getY() - 1);
-//            } else {
-//                boolean guess = questionGuess();
-//                if (guess) {
-//                    System.out.println("Cool they got it right");
-//                    myMazeRoom[myMaze.getY()][myMaze.getX()].getDoor(Room.NORTH_INDEX).setForeverLocked(false);
-//                    myMazeRoom[myMaze.getY()][myMaze.getX()].getDoor(Room.NORTH_INDEX).unlock();
-//                    myMaze.setY(myMaze.getY() - 1);
-//                } else {
-//                    myMazeRoom[myMaze.getY()][myMaze.getX()].getDoor(Room.NORTH_INDEX).setForeverLocked(true);
-//                }
-//            }
-            myMaze.setY(myMaze.getY() - 1);
-            removeAll();
-            revalidate();
-            repaint();
+            if (!myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getLock()) { //if the door isn't locked we could just move the player through it.
+                myMaze.movePlayer(Direction.NORTH);
+                removeAll();
+                revalidate();
+                repaint();
+            } else {
+                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX);
+                myEastDoor.setEnabled(false);
+                myEastDoor.setBackground(Color.GRAY);
+                myEastDoor.setOpaque(true);
+
+                myWestDoor.setEnabled(false);
+                myWestDoor.setBackground(Color.GRAY);
+                myWestDoor.setOpaque(true);
+
+                myNorthDoor.setEnabled(false);
+                myNorthDoor.setBackground(Color.GRAY);
+                myNorthDoor.setOpaque(true);
+
+                mySouthDoor.setEnabled(false);
+                mySouthDoor.setBackground(Color.GRAY);
+                mySouthDoor.setOpaque(true);
+
+                createQuestionLayout(Direction.NORTH);
+
+                removeAll();
+                revalidate();
+                repaint();
+            }
             System.out.println(myMaze.getY());
-               // mySouthDoor.setEnabled(true);
         });
 
         myEastDoor.addActionListener(e -> {
-            myMaze.setX(myMaze.getX() + 1);
-            removeAll();
-            revalidate();
-            repaint();
-            //myWestDoor.setEnabled(true);
+            // myMaze.setX(myMaze.getX() + 1);
+            if (!myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getLock()) { //if the door isn't locked we could just move the player through it.
+                myMaze.movePlayer(Direction.EAST);
+                removeAll();
+                revalidate();
+                repaint();
+            } else {
+                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX);
+                myEastDoor.setEnabled(false);
+                myEastDoor.setBackground(Color.GRAY);
+                myEastDoor.setOpaque(true);
+
+                myWestDoor.setEnabled(false);
+                myWestDoor.setBackground(Color.GRAY);
+                myWestDoor.setOpaque(true);
+
+                myNorthDoor.setEnabled(false);
+                myNorthDoor.setBackground(Color.GRAY);
+                myNorthDoor.setOpaque(true);
+
+                mySouthDoor.setEnabled(false);
+                mySouthDoor.setBackground(Color.GRAY);
+                mySouthDoor.setOpaque(true);
+                createQuestionLayout(Direction.EAST);
+
+                revalidate();
+            }
+//            System.out.println(myMaze.getCurrentRoom().getRoomNumber());
             System.out.println(myMaze.getX());
         });
 
         mySouthDoor.addActionListener(e -> {
-            myMaze.setY(myMaze.getY() + 1);
-            removeAll();
-            revalidate();
-            repaint();
-            //myNorthDoor.setEnabled(true);
+            //myMaze.setY(myMaze.getY() + 1);
+            if (!myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getLock()) { //if the door isn't locked we could just move the player through it.
+                myMaze.movePlayer(Direction.SOUTH);
+                removeAll();
+                revalidate();
+                repaint();
+            } else {
+                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX);
+                myEastDoor.setEnabled(false);
+                myEastDoor.setBackground(Color.GRAY);
+                myEastDoor.setOpaque(true);
+
+                myWestDoor.setEnabled(false);
+                myWestDoor.setBackground(Color.GRAY);
+                myWestDoor.setOpaque(true);
+
+                myNorthDoor.setEnabled(false);
+                myNorthDoor.setBackground(Color.GRAY);
+                myNorthDoor.setOpaque(true);
+
+                mySouthDoor.setEnabled(false);
+                mySouthDoor.setBackground(Color.GRAY);
+                mySouthDoor.setOpaque(true);
+                createQuestionLayout(Direction.SOUTH);
+
+                revalidate();
+            }
+//            System.out.println(myMaze.getCurrentRoom().getRoomNumber());
             System.out.println(myMaze.getY());
         });
 
         myWestDoor.addActionListener(e -> {
-            myMaze.setX(myMaze.getX() - 1);
-            removeAll();
-            revalidate();
-            repaint();
-          // myEastDoor.setEnabled(true);
+            if (!myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getLock()) { //this is already set in the moveplayer method
+                myMaze.movePlayer(Direction.WEST);
+                removeAll();
+                revalidate();
+                repaint();
+            } else {
+                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX);
+                myEastDoor.setEnabled(false);
+                myEastDoor.setBackground(Color.GRAY);
+                myEastDoor.setOpaque(true);
+
+                myWestDoor.setEnabled(false);
+                myWestDoor.setBackground(Color.GRAY);
+                myWestDoor.setOpaque(true);
+
+                myNorthDoor.setEnabled(false);
+                myNorthDoor.setBackground(Color.GRAY);
+                myNorthDoor.setOpaque(true);
+
+                mySouthDoor.setEnabled(false);
+                mySouthDoor.setBackground(Color.GRAY);
+                mySouthDoor.setOpaque(true);
+
+                createQuestionLayout(Direction.WEST);
+
+                revalidate();
+            }
+            // System.out.println(myMaze.getCurrentRoom().getRoomNumber());
             System.out.println(myMaze.getX());
         });
 
     }
+
+    public void createQuestionLayout(final Direction theDir) {
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(Color.BLACK);
+
+        panel.setBounds(83, 413, 630, 329);
+
+        int index;
+        if (theDir == Direction.NORTH) {
+            index = 0;
+        } else if (theDir == Direction.EAST){
+            index = 1;
+        } else if (theDir == Direction.SOUTH) {
+            index = 2;
+        } else {
+            index = 3;
+        }
+
+        Door door = myMaze.getCurrentRoom().getDoor(index);
+
+//        myJTextField.setBounds(90,474,616,54);
+        myJTextField.setBounds(0, 54, 630, 54);
+        myJTextField.setBackground(new Color(25,25,25));
+        myJTextField.setForeground(new Color(255,165,0));
+        myJTextField.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+        myJTextField.setBorder(BorderFactory.createBevelBorder(1));
+        myJTextField.setHorizontalAlignment(JTextField.CENTER);
+        myJTextField.setEditable(false);
+        myJTextField.setText(door.getQuestion());
+        myJTextArea.setLineWrap(true);
+        myJTextArea.setWrapStyleWord(true);
+
+        //myJTextArea.setBounds(90,420,616,54);
+        myJTextArea.setBounds(0, 0, 630, 54);
+        myJTextArea.setLineWrap(true);
+        myJTextArea.setWrapStyleWord(true);
+        myJTextArea.setBackground(new Color(25,25,25));
+        myJTextArea.setForeground(new Color(255,255,0));
+        myJTextArea.setFont(new Font("MV Boli",Font.BOLD,25));
+        myJTextArea.setBorder(BorderFactory.createBevelBorder(1));
+        myJTextArea.setEditable(false);
+        myJTextArea.setText("Question " + myQuestionNumber);
+
+        //optionA.setBounds(90,540,40,40);
+        optionA.setBounds(0, 120, 40, 40);
+        optionA.setFont(new Font("MV Boli",Font.BOLD,35));
+        optionA.setFocusable(false);
+        //  optionA.addActionListener((ActionListener) this);
+        optionA.setText("A");
+
+        // optionB.setBounds(90,591,40,40);
+        optionB.setBounds(0, 171, 40, 40);
+        optionB.setFont(new Font("MV Boli",Font.BOLD,35));
+        optionB.setFocusable(false);
+        //  optionB.addActionListener((ActionListener) this);
+        optionB.setText("B");
+
+        //  optionC.setBounds(90,642,40,40);
+        optionC.setBounds(0, 222, 40, 40);
+        optionC.setFont(new Font("MV Boli",Font.BOLD,35));
+        optionC.setFocusable(false);
+        //  optionC.addActionListener((ActionListener) this);
+        optionC.setText("C");
+
+        // optionD.setBounds(90,693,40,40);
+        optionD.setBounds(0, 273, 40, 40);
+        optionD.setFont(new Font("MV Boli",Font.BOLD,35));
+        optionD.setFocusable(false);
+        //   optionD.addActionListener((ActionListener) this);
+        optionD.setText("D");
+
+        //answer_labelA.setBounds(140,540,566,40);
+        answer_labelA.setBounds(50, 120, 566, 40);
+        answer_labelA.setBackground(new Color(50,50,50));
+        answer_labelA.setForeground(new Color(230,230,250));
+        answer_labelA.setFont(new Font("MV Boli",Font.PLAIN,20));
+        answer_labelA.setText(door.getOptionA());
+
+        // answer_labelB.setBounds(140,591,566,40);
+        answer_labelB.setBounds(50, 171, 566, 40);
+        answer_labelB.setBackground(new Color(50,50,50));
+        answer_labelB.setForeground(new Color(230,230,250));
+        answer_labelB.setFont(new Font("MV Boli",Font.PLAIN,20));
+        answer_labelB.setText(door.getOptionB());
+
+        //  answer_labelC.setBounds(140,642,566,40);
+        answer_labelC.setBounds(50, 222, 566, 40);
+        answer_labelC.setBackground(new Color(50,50,50));
+        answer_labelC.setForeground(new Color(230,230,250));
+        answer_labelC.setFont(new Font("MV Boli",Font.PLAIN,20));
+        answer_labelC.setText(door.getOptionC());
+
+        //  answer_labelD.setBounds(140,693,566,40);
+        answer_labelD.setBounds(50, 273, 566, 40);
+        answer_labelD.setBackground(new Color(50,50,50));
+        answer_labelD.setForeground(new Color(230,230,250));
+        answer_labelD.setFont(new Font("MV Boli",Font.PLAIN,20));
+        answer_labelD.setText(door.getOptionD());
+
+        panel.add(optionA);
+        panel.add(optionB);
+        panel.add(optionC);
+        panel.add(optionD);
+        panel.add(myJTextArea);
+        panel.add(myJTextField);
+        panel.add(answer_labelA);
+        panel.add(answer_labelB);
+        panel.add(answer_labelC);
+        panel.add(answer_labelD);
+        add(panel);
+        panel.revalidate();
+        panel.repaint();
+
+
+        addListenersOptions(theDir);
+        myQuestionNumber++;
+    }
+
+
+    public void addListenersOptions(Direction theDir) {
+        optionA.setEnabled(true);
+        optionB.setEnabled(true);
+        optionC.setEnabled(true);
+        optionD.setEnabled(true);
+        int index;
+        if (theDir == Direction.NORTH) {
+            index = 0;
+        } else if (theDir == Direction.EAST){
+            index = 1;
+        } else if (theDir == Direction.SOUTH) {
+            index = 2;
+        } else {
+            index = 3;
+        }
+
+        Door theDoor = myMaze.getCurrentRoom().getDoor(index);
+        optionA.addActionListener(e -> {
+            //     System.out.println("HI");
+            if (!theDoor.getOptionA().equals(theDoor.getAnswer())) {
+                theDoor.setForeverLocked(true);
+                lockingDoors(theDir);
+            } else {
+                //     System.out.println("Cool they got it right");
+                theDoor.setForeverLocked(false);
+                unlockingDoors(theDir);
+                theDoor.unlock();
+                myMaze.movePlayer(theDir);
+            }
+            removeAll();
+            revalidate();
+            repaint();
+        });
+
+        optionB.addActionListener(e -> {
+            //    System.out.println("HI");
+            if (!theDoor.getOptionB().equals(theDoor.getAnswer())) {
+                theDoor.setForeverLocked(true);
+                lockingDoors(theDir);
+            } else {
+                //    System.out.println("Cool they got it right");
+                theDoor.setForeverLocked(false);
+                unlockingDoors(theDir);
+                theDoor.unlock();
+                myMaze.movePlayer(theDir);
+            }
+            removeAll();
+            revalidate();
+            repaint();
+        });
+
+        optionC.addActionListener(e -> {
+            //   System.out.println("HI");
+            if (!theDoor.getOptionC().equals(theDoor.getAnswer())) {
+                theDoor.setForeverLocked(true);
+                lockingDoors(theDir);
+            } else {
+                //      System.out.println("Cool they got it right");
+                theDoor.setForeverLocked(false);
+                unlockingDoors(theDir);
+                theDoor.unlock();
+                myMaze.movePlayer(theDir);
+            }
+            removeAll();
+            revalidate();
+            repaint();
+        });
+
+        optionD.addActionListener(e -> {
+            //     System.out.println("HI");
+            if (!theDoor.getOptionD().equals(theDoor.getAnswer())) {
+                theDoor.setForeverLocked(true);
+                lockingDoors(theDir);
+                removeAll();
+                repaint();
+            } else {
+                //       System.out.println("Cool they got it right");
+                theDoor.setForeverLocked(false);
+                unlockingDoors(theDir);
+                theDoor.unlock();
+                myMaze.movePlayer(theDir);
+            }
+            removeAll();
+            revalidate();
+            repaint();
+        });
+    }
+
+    private void unlockingDoors(final Direction theDir) {
+        if (theDir == Direction.NORTH) {
+            System.out.println("UL WEST: " + myMaze.getX());
+            myMaze.getRoom(myMaze.getX(), myMaze.getY() - 1).getDoor(Room.SOUTH_INDEX).unlock();
+        } else if (theDir == Direction.SOUTH) {
+            System.out.println("UL SOUTH: " + myMaze.getY());
+            myMaze.getRoom(myMaze.getX(), myMaze.getY() + 1).getDoor(Room.NORTH_INDEX).unlock();
+        } else if (theDir == Direction.WEST) {
+            System.out.println("UL WEST: " + myMaze.getX());
+            myMaze.getRoom(myMaze.getX() - 1, myMaze.getY()).getDoor(Room.EAST_INDEX).unlock();
+        } else if (theDir == Direction.EAST) {
+            System.out.println("UL EAST: " + myMaze.getX());
+            myMaze.getRoom(myMaze.getX() + 1, myMaze.getY()).getDoor(Room.WEST_INDEX).unlock();
+        }
+    }
+
+    private void lockingDoors(final Direction theDir) {
+        if (theDir == Direction.NORTH) {
+            System.out.println("NORTH: " + myMaze.getY());
+            myMaze.getRoom(myMaze.getX(), myMaze.getY() - 1).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        } else if (theDir == Direction.SOUTH) {
+            System.out.println("SOUTH: " + myMaze.getY());
+            myMaze.getRoom(myMaze.getX(), myMaze.getY() + 1).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
+        } else if (theDir == Direction.WEST) {
+            System.out.println("WEST: " + myMaze.getX());
+            myMaze.getRoom(myMaze.getX() - 1, myMaze.getY()).getDoor(Room.EAST_INDEX).setForeverLocked(true);
+        } else if (theDir == Direction.EAST) {
+            System.out.println("EAST: " + myMaze.getX());
+            myMaze.getRoom(myMaze.getX() + 1, myMaze.getY()).getDoor(Room.WEST_INDEX).setForeverLocked(true);
+        }
+    }
+
+
 
     public boolean questionGuess() { //method should show the questions
         optionA = new JButton("A");
@@ -269,10 +591,6 @@ public class Display extends JPanel {
         optionC = new JButton("C");
         optionD = new JButton("D");
 
-
-        optionA.addActionListener(e -> {
-
-        });
 
 
         return true;

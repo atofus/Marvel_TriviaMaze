@@ -6,13 +6,19 @@ public class Door {
     private boolean myForeverLocked;
 
     private boolean visible;
+    private Question myQuestion;
 
-    private Question myQuestion = new Question("Captain America's Name?", "Steve Rogers");
+    //private Question myQuestion = new Question("Captain America's Name?", "Steve Rogers");
 
     public Door () {
         myLock = true;
         myForeverLocked = false;
-        visible = true;
+        visible = true; //visible is all about seeing the door at edges or corners of the map.
+        // myQuestion = SQLiteClass.generateQuestion();
+
+        //will be a question to ask for all doors.
+        myQuestion = new Question("What is Spiderman real name?", "Frank Clark",
+                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
     }
 
     public boolean getLock() {
@@ -39,8 +45,33 @@ public class Door {
         return myForeverLocked;
     }
 
+    public String getQuestion() {
+        return myQuestion.getQuestion();
+    }
+
+    public String getOptionA() {
+        return myQuestion.getOptionA();
+    }
+
+    public String getOptionB() {
+        return myQuestion.getOptionB();
+    }
+
+    public String getOptionC() {
+        return myQuestion.getOptionC();
+    }
+
+    public String getOptionD() {
+        return myQuestion.getOptionD();
+    }
+
+    public String getAnswer() {
+        return myQuestion.getAnswer();
+    }
+
     public void setForeverLocked(final boolean locked) {
         myForeverLocked = locked;
     }
+
 
 }
