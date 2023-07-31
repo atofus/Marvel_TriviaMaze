@@ -111,7 +111,7 @@ public class Display extends JPanel {
     }
 
     public void createNorthDoor() {
-        doorIcon = new ImageIcon("images/door.png");
+        doorIcon = new ImageIcon("src/images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -119,20 +119,24 @@ public class Display extends JPanel {
         doorIcon = new ImageIcon(newing);
         myNorthDoor = new JButton(doorIcon);
         myNorthDoor.setBackground(Color.RED);
+        myNorthDoor.setOpaque(true);
         myNorthDoor.setBounds(545, 105, 35, 35);
+
         if (!myMaze.display(Direction.NORTH)) {  //&& myMaze.getDoor()) {
             myNorthDoor.setBackground(Color.GRAY);
+            //myNorthDoor.setOpaque(true);
             myNorthDoor.setEnabled(false);
-           // System.out.println("calling");
+            // System.out.println("calling");
         } else {
             //System.out.println("North door open");
             myNorthDoor.setEnabled(true);
+            myNorthDoor.setBorderPainted(false);
         }
         add(myNorthDoor);
     }
 
     public void createWestDoor() {
-        doorIcon = new ImageIcon("images/door.png");
+        doorIcon = new ImageIcon("src/images/door.png");
         //scaling image down.
         Image image = doorIcon.getImage();
         Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
@@ -140,40 +144,47 @@ public class Display extends JPanel {
         myWestDoor = new JButton(doorIcon);
         myWestDoor.setBounds(489, 160, 35, 35);
         myWestDoor.setBackground(Color.RED);
-        if (!myMaze.display(Direction.WEST)) {  //&& myMaze.getDoor()) {
+        myWestDoor.setOpaque(true);
+
+        if (!myMaze.display(Direction.WEST) || myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getForeverLocked()) {
             myWestDoor.setBackground(Color.GRAY);
+            myWestDoor.setOpaque(true);
             myWestDoor.setEnabled(false);
         } else {
-        //    System.out.println("West door open");
+            //    System.out.println("West door open");
             myWestDoor.setEnabled(true);
+            myWestDoor.setBorderPainted(false);
         }
         add(myWestDoor);
     }
 
     public void createSouthDoor() {
-        doorIcon = new ImageIcon("images/door.png");
+        doorIcon = new ImageIcon("src/images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
         Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
         doorIcon = new ImageIcon(newing);
 
+
         mySouthDoor = new JButton(doorIcon);
         mySouthDoor.setBackground(Color.RED);
+        mySouthDoor.setOpaque(true);
+
         mySouthDoor.setBounds(545, 219, 35, 35);
-        if (!myMaze.display(Direction.SOUTH) ||
-                (myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX) != null
-                        && myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())) {  //&& myMaze.getDoor()) {
+        if (!myMaze.display(Direction.SOUTH) || myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getForeverLocked()) {  //&& myMaze.getDoor()) {
             mySouthDoor.setBackground(Color.GRAY);
+            mySouthDoor.setOpaque(true);
             mySouthDoor.setEnabled(false);
         } else {
             mySouthDoor.setEnabled(true);
+            mySouthDoor.setBorderPainted(false);
         }
         add(mySouthDoor);
     }
 
     public void createEastDoor() {
-        doorIcon = new ImageIcon("images/door.png");
+        doorIcon = new ImageIcon("src/images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -181,46 +192,20 @@ public class Display extends JPanel {
         doorIcon = new ImageIcon(newing);
         myEastDoor = new JButton(doorIcon);
         myEastDoor.setBackground(Color.RED);
-        myEastDoor.setBounds(605, 160, 35, 35);
-        if (!myMaze.display(Direction.EAST)) {  //if there's a display of a door east.
+        myEastDoor.setOpaque(true);
+
+        myEastDoor.setBounds(601, 160, 35, 35);
+        if (!myMaze.display(Direction.EAST) || myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getForeverLocked()) {  //if there's a display of a door east. Or if the east door is forever locked
             myEastDoor.setBackground(Color.GRAY);
+            myEastDoor.setOpaque(true);
             myEastDoor.setEnabled(false);
         } else {
             myEastDoor.setEnabled(true);
+            myEastDoor.setBorderPainted(false);
         }
         add(myEastDoor);
     }
 
-    //action listeners for buttons.
-    //if (myWestDoor is pressed)
-    //myMaze.setX(myMaze.getX() - 1);
-//    public void createDoorButtons() {
-//        doorIcon = new ImageIcon("src/images/door.png");
-//
-//        //scaling image down.
-//        Image image = doorIcon.getImage();
-//        Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
-//        doorIcon = new ImageIcon(newing);
-//
-//        myNorthDoor = new JButton(doorIcon);
-//        myNorthDoor.setBackground(Color.RED);
-//        myNorthDoor.setBounds(545, 105, 35, 35);
-//        myWestDoor = new JButton(doorIcon);
-//        myWestDoor.setBounds(489, 160, 35, 35);
-//        myWestDoor.setBackground(Color.RED);
-//        mySouthDoor = new JButton(doorIcon);
-//        mySouthDoor.setBackground(Color.RED);
-//        mySouthDoor.setBounds(545, 219, 35, 35);
-//        myEastDoor = new JButton(doorIcon);
-//        myEastDoor.setBackground(Color.RED);
-//        myEastDoor.setBounds(605, 160, 35, 35);
-//
-//        add(myNorthDoor);
-//        add(myWestDoor);
-//        add(mySouthDoor);
-//        add(myEastDoor);
-//        addListeners();
-//    }
 
     public void addListeners() {
         int size = myMaze.getMaze().length - 1; //to make sure door is disabled if we're at edge
