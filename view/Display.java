@@ -505,7 +505,6 @@ public class Display extends JPanel {
                 theDoor.setForeverLocked(true);
                 lockingDoors(theDir);
             } else {
-                //      System.out.println("Cool they got it right");
                 theDoor.setForeverLocked(false);
                 unlockingDoors(theDir);
                 theDoor.unlock();
