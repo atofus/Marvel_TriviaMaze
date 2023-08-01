@@ -12,14 +12,13 @@ public class Display extends JPanel {
     private JButton myWestDoor;
     private JButton mySouthDoor;
     private JButton myEastDoor;
-    private Maze myMaze = Maze.getMyInstance();
+    private final Maze myMaze = Maze.getMyInstance();
    // private Maze myMaze = new Maze();
-    private JButton optionA;
-    private JButton optionB;
-    private JButton optionC;
-    private JButton optionD;
+    private JButton optionA = new JButton();
+    private JButton optionB = new JButton();
+    private JButton optionC = new JButton();
+    private JButton optionD = new JButton();
     private ImageIcon doorIcon;
- //   private Player myPlayer = new Player();
     private ImageIcon playerIcon;
     private JTextField textField;
     private ImageIcon lockIcon;
@@ -35,7 +34,7 @@ public class Display extends JPanel {
 
 
     public Display() {
-
+        myMaze.roomSetup(); //we set up every room in the maze at the beginning.
     }
 
     @Override
@@ -79,6 +78,10 @@ public class Display extends JPanel {
         drawRectangle(g);
     }
 
+    void drawLock(Graphics g) {
+
+    }
+
     void drawRectangle(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.YELLOW);
@@ -102,17 +105,9 @@ public class Display extends JPanel {
         g2d.drawRect(80, 410, 636, 335);
     }
 
-    public void createQuestionLayout() {
-        textField = new JTextField();
-        textField.setBounds(4,4,4,4);
-//        Question question = new Question("What is Spiderman real name", "Frank Clark",
-//                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
-
-
-    }
 
     public void createNorthDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -125,9 +120,8 @@ public class Display extends JPanel {
 
         if (!myMaze.display(Direction.NORTH)) {  //&& myMaze.getDoor()) {
             myNorthDoor.setBackground(Color.GRAY);
-            //myNorthDoor.setOpaque(true);
+            myNorthDoor.setOpaque(true);
             myNorthDoor.setEnabled(false);
-            // System.out.println("calling");
         } else {
             //System.out.println("North door open");
             myNorthDoor.setEnabled(true);
@@ -137,7 +131,7 @@ public class Display extends JPanel {
     }
 
     public void createWestDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
         //scaling image down.
         Image image = doorIcon.getImage();
         Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
@@ -160,7 +154,7 @@ public class Display extends JPanel {
     }
 
     public void createSouthDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -185,7 +179,7 @@ public class Display extends JPanel {
     }
 
     public void createEastDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -220,7 +214,6 @@ public class Display extends JPanel {
                 revalidate();
                 repaint();
             } else {
-                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX);
                 myEastDoor.setEnabled(false);
                 myEastDoor.setBackground(Color.GRAY);
                 myEastDoor.setOpaque(true);
@@ -238,11 +231,9 @@ public class Display extends JPanel {
                 mySouthDoor.setOpaque(true);
 
                 createQuestionLayout(Direction.NORTH);
-
-                removeAll();
                 revalidate();
-                repaint();
             }
+
             System.out.println(myMaze.getY());
         });
 
@@ -254,7 +245,6 @@ public class Display extends JPanel {
                 revalidate();
                 repaint();
             } else {
-                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX);
                 myEastDoor.setEnabled(false);
                 myEastDoor.setBackground(Color.GRAY);
                 myEastDoor.setOpaque(true);
@@ -274,7 +264,7 @@ public class Display extends JPanel {
 
                 revalidate();
             }
-//            System.out.println(myMaze.getCurrentRoom().getRoomNumber());
+
             System.out.println(myMaze.getX());
         });
 
@@ -286,7 +276,6 @@ public class Display extends JPanel {
                 revalidate();
                 repaint();
             } else {
-                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX);
                 myEastDoor.setEnabled(false);
                 myEastDoor.setBackground(Color.GRAY);
                 myEastDoor.setOpaque(true);
@@ -306,7 +295,7 @@ public class Display extends JPanel {
 
                 revalidate();
             }
-//            System.out.println(myMaze.getCurrentRoom().getRoomNumber());
+
             System.out.println(myMaze.getY());
         });
 
@@ -317,7 +306,6 @@ public class Display extends JPanel {
                 revalidate();
                 repaint();
             } else {
-                Door eastDoor = myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX);
                 myEastDoor.setEnabled(false);
                 myEastDoor.setBackground(Color.GRAY);
                 myEastDoor.setOpaque(true);
@@ -335,10 +323,9 @@ public class Display extends JPanel {
                 mySouthDoor.setOpaque(true);
 
                 createQuestionLayout(Direction.WEST);
-
                 revalidate();
             }
-            // System.out.println(myMaze.getCurrentRoom().getRoomNumber());
+
             System.out.println(myMaze.getX());
         });
 
@@ -498,12 +485,10 @@ public class Display extends JPanel {
         });
 
         optionB.addActionListener(e -> {
-            //    System.out.println("HI");
             if (!theDoor.getOptionB().equals(theDoor.getAnswer())) {
                 theDoor.setForeverLocked(true);
                 lockingDoors(theDir);
             } else {
-                //    System.out.println("Cool they got it right");
                 theDoor.setForeverLocked(false);
                 unlockingDoors(theDir);
                 theDoor.unlock();
