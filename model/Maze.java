@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import fakefiles.RoomOG;
 import model.Room;
 
 public class Maze {
