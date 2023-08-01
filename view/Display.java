@@ -48,7 +48,7 @@ public class Display extends JPanel {
         super.paintComponent(g);
         Room [][] mazeMap = myMaze.getMaze();
         Graphics2D g2d = (Graphics2D) g;
-        playerIcon = new ImageIcon("src/images/Comic_Books.png");
+        playerIcon = new ImageIcon("images/Comic_Books.png");
 
         //draw border for playing field
         g2d.setColor(Color.YELLOW); //sets the border/line to yellow
@@ -79,7 +79,7 @@ public class Display extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         Room [][] mazeMap = myMaze.getMaze();
-        lockIcon = new ImageIcon("src/images/lock.png");
+        lockIcon = new ImageIcon("images/lock.png");
         Image image = lockIcon.getImage();
         Image newing = image.getScaledInstance(23, 23, java.awt.Image.SCALE_SMOOTH);
         lockIcon = new ImageIcon(newing);
@@ -149,7 +149,7 @@ public class Display extends JPanel {
 
 
     public void createNorthDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -174,7 +174,7 @@ public class Display extends JPanel {
     }
 
     public void createWestDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
         //scaling image down.
         Image image = doorIcon.getImage();
         Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
@@ -197,7 +197,7 @@ public class Display extends JPanel {
     }
 
     public void createSouthDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
@@ -222,7 +222,7 @@ public class Display extends JPanel {
     }
 
     public void createEastDoor() {
-        doorIcon = new ImageIcon("src/images/door.png");
+        doorIcon = new ImageIcon("images/door.png");
 
         //scaling image down.
         Image image = doorIcon.getImage();
