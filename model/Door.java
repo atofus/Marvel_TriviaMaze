@@ -1,5 +1,8 @@
 package model;
 
+import view.DBQuestions;
+import view.Display;
+
 public class Door {
 
     private boolean myLock;
@@ -7,6 +10,9 @@ public class Door {
 
     private boolean visible;
     private Question myQuestion;
+
+    private DBQuestions dbq = new DBQuestions();
+
 
     //private Question myQuestion = new Question("Captain America's Name?", "Steve Rogers");
 
@@ -17,8 +23,11 @@ public class Door {
        // myQuestion = SQLiteClass.generateQuestion();
 
         //will be a question to ask for all doors.
-        myQuestion = new Question("What is Spiderman real name?", "Frank Clark",
-                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
+//        myQuestion = new Question("What is Spiderman real name?", "Frank Clark",
+//                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
+
+        myQuestion = dbq.getRandomQuestion(Display.charName);
+        //System.out.println(myQuestion.getQuestion());
     }
 
     public boolean getLock() {

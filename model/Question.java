@@ -20,6 +20,10 @@ public class Question {
         myAnswer = theAnswer;
     }
 
+    public Question() {
+
+    }
+
     public String getOptionA() {
         return myOptionA;
     }

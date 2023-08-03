@@ -253,6 +253,22 @@ public class Maze {
         }
     }
 
+    public void unlockingDoors(final Direction theDir) {
+        if (theDir == Direction.NORTH) {
+            System.out.println("UL WEST: " + getX());
+            getRoom(getX(), getY() - 1).getDoor(Room.SOUTH_INDEX).unlock();
+        } else if (theDir == Direction.SOUTH) {
+            System.out.println("UL SOUTH: " + getY());
+            getRoom(getX(), getY() + 1).getDoor(Room.NORTH_INDEX).unlock();
+        } else if (theDir == Direction.WEST) {
+            System.out.println("UL WEST: " + getX());
+            getRoom(getX() - 1, getY()).getDoor(Room.EAST_INDEX).unlock();
+        } else if (theDir == Direction.EAST) {
+            System.out.println("UL EAST: " + getX());
+            getRoom(getX() + 1, getY()).getDoor(Room.WEST_INDEX).unlock();
+        }
+    }
+
     public void lockingDoors(final Door theDoor) {
         if (theDoor.equals(getCurrentRoom().getDoor(Room.NORTH_INDEX))) {
             System.out.println("NORTH: " + getY());
@@ -272,4 +288,19 @@ public class Maze {
         }
     }
 
+    public void lockingDoors(final Direction theDir) {
+        if (theDir == Direction.NORTH) {
+            System.out.println("NORTH: " + getY());
+            getRoom(getX(), getY() - 1).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        } else if (theDir == Direction.SOUTH) {
+            System.out.println("SOUTH: " + getY());
+            getRoom(getX(), getY() + 1).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
+        } else if (theDir == Direction.WEST) {
+            System.out.println("WEST: " + getX());
+            getRoom(getX() - 1, getY()).getDoor(Room.EAST_INDEX).setForeverLocked(true);
+        } else if (theDir == Direction.EAST) {
+            System.out.println("EAST: " + getX());
+            getRoom(getX() + 1, getY()).getDoor(Room.WEST_INDEX).setForeverLocked(true);
+        }
+    }
 }

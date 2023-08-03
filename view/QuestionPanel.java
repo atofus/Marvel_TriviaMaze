@@ -44,14 +44,18 @@ public class QuestionPanel extends JPanel {
        // Door door = myMaze.getCurrentRoom().getDoor(theIndex);
 
 //        myJTextField.setBounds(90,474,616,54);
+        myJTextField.setText(myDoor.getQuestion());
+        myJTextField.setFont(new Font("Geneva", Font.PLAIN, 10));
         myJTextField.setBounds(0, 54, 630, 54);
         myJTextField.setBackground(new Color(25,25,25));
         myJTextField.setForeground(new Color(25,255,0));
-        myJTextField.setFont(new Font("Ink Free",Font.BOLD,20));
+        //myJTextField.setFont(new Font("Ink Free",Font.BOLD,10));
         myJTextField.setBorder(BorderFactory.createBevelBorder(1));
         myJTextField.setHorizontalAlignment(JTextField.CENTER);
         myJTextField.setEditable(false);
-        myJTextField.setText(myDoor.getQuestion());
+
+        //myJTextField.setText(myDoor.getQuestion());
+        //myJTextField.setFont(new Font("Ink Free",Font.BOLD,10));
         myJTextArea.setLineWrap(true);
         myJTextArea.setWrapStyleWord(true);
 
