@@ -38,7 +38,7 @@ public class GUI {
                 frame.setLocationRelativeTo(null);
                 frame.getContentPane().setBackground(Color.BLACK);
 
-                playBackgroundMusic("Avengers Suite (Theme).wav");
+                //playBackgroundMusic("Avengers Suite (Theme).wav");
             }
         });
     }
