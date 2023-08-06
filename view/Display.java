@@ -265,10 +265,10 @@ public class Display extends JPanel {
                 }
             }
         }
-        drawRectangle(g);
+        drawRoomBox(g);
     }
 
-    void drawRectangle(Graphics g) throws IOException, InterruptedException {
+    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
 
         boolean setButtonsInvisible = false;
 
@@ -320,7 +320,7 @@ public class Display extends JPanel {
         createSouthDoor(); //create south door
         createEastDoor(); //create east door
         addListeners(); //method for button listener.
-        drawQuestionRectangle(g); //drawing rectangle where we put our question in.
+        drawQuestionArea(g); //drawing rectangle where we put our question in.
 
         if (setButtonsInvisible) {
             mySouthDoor.setVisible(false);
@@ -410,7 +410,7 @@ public class Display extends JPanel {
 
 
 
-    void drawQuestionRectangle(Graphics g) {
+    void drawQuestionArea(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.CYAN);
         g2d.setStroke(new BasicStroke(6));
@@ -425,11 +425,11 @@ public class Display extends JPanel {
         myDeadpoolIcon = new ImageIcon(newing);
         g2d.drawImage(myDeadpoolIcon.getImage(), 350, 245, null);
 
-        drawDeadpoolStoolLOL(g);
+        drawDeadpoolStool(g);
         displayRoomNumber(); //a jlabel that will display what room we're in.
     }
 
-    void drawDeadpoolStoolLOL(Graphics g) {
+    void drawDeadpoolStool(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.CYAN);
         g2d.setStroke(new BasicStroke(6));
