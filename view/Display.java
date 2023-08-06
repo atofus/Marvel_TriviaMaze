@@ -277,8 +277,6 @@ public class Display extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.YELLOW);
-//        Stroke stroke = new BasicStroke(6f);
-//        g2d.setStroke(stroke);
         g2d.drawRect(488, 104, 150, 150);
 
 
@@ -621,6 +619,7 @@ public class Display extends JPanel {
                 mySouthDoor.setEnabled(false);
                 mySouthDoor.setBackground(Color.GRAY);
                 mySouthDoor.setOpaque(true);
+
                 createQuestionLayout(Direction.EAST);
 
                 //timer.stop();
@@ -732,7 +731,7 @@ public class Display extends JPanel {
     }
 
     public void createTimer(int indexDir) {
-        JTextField countField = new JTextField();
+        JLabel countField = new JLabel();
         if (difficultyLevel == 1) {
             countDownSec[0] = 15;
             countField.setText("Time: 15");
@@ -753,7 +752,6 @@ public class Display extends JPanel {
 
 
         countField.setBounds(560,410, 150,50);
-        countField.setEditable(false);
         countField.setBackground(new Color(25,25,25));
         countField.setForeground(new Color(255,255,0));
         countField.setFont(new Font("MV Boli",Font.BOLD,25));
@@ -806,13 +804,13 @@ public class Display extends JPanel {
 
         int index;
         if (theDir == Direction.NORTH) {
-            index = 0;
+            index = Room.NORTH_INDEX;
         } else if (theDir == Direction.EAST){
-            index = 1;
+            index = Room.EAST_INDEX;
         } else if (theDir == Direction.SOUTH) {
-            index = 2;
+            index = Room.SOUTH_INDEX;
         } else {
-            index = 3;
+            index = Room.SOUTH_INDEX;
         }
 
         Door door = myMaze.getCurrentRoom().getDoor(index);
@@ -967,13 +965,13 @@ public class Display extends JPanel {
         optionD.setEnabled(true);
         int index;
         if (theDir == Direction.NORTH) {
-            index = 0;
+            index = Room.NORTH_INDEX;
         } else if (theDir == Direction.EAST){
-            index = 1;
+            index = Room.EAST_INDEX;
         } else if (theDir == Direction.SOUTH) {
-            index = 2;
+            index = Room.SOUTH_INDEX;
         } else {
-            index = 3;
+            index = Room.WEST_INDEX;
         }
 
         Door theDoor = myMaze.getCurrentRoom().getDoor(index);
