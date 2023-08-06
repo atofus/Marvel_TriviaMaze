@@ -212,11 +212,11 @@ public class TestingDisplay extends JPanel implements ActionListener {
 
                 if (!qp.getCorrect()) {
                     myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).setForeverLocked(true);
-                    myMaze.lockingDoors(myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX));
+               //     myMaze.lockingDoors(myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX));
                 } else {
                     myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).setForeverLocked(false);
                     myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).unlock();
-                    myMaze.unlockingDoors(myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX));
+              //      myMaze.unlockingDoors(myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX));
                     myMaze.movePlayer(Direction.EAST);
                 }
                 removeAll();
