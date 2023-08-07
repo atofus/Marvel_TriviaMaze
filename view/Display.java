@@ -68,12 +68,28 @@ public class Display extends JPanel {
     boolean hint = false;
 
     public Display() {
-
         scoreVal = 0;
         nameVal = "";
-
         difficultyLevel = 1;
 
+        characterSelect();
+
+        myMaze = Maze.getMyInstance();
+        getDiffLevel();
+
+        //randomLocks();
+
+        createNorthDoor();
+        createEastDoor();
+        createWestDoor();
+        createSouthDoor();
+        addListeners();
+
+        //TODO add in difficulty level
+
+    }
+
+    public void characterSelect() {
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMessage("Pick a character, any character.");
         optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
@@ -112,16 +128,6 @@ public class Display extends JPanel {
         optionPane.setOptions(new Object[] {bwButton, caButton, lokiButton, sButton});
         JDialog dialog = optionPane.createDialog(this, "Character");
         dialog.setVisible(true);
-
-        myMaze = Maze.getMyInstance();
-        myMaze.roomSetup(); //we set up every room in the maze.
-
-        //randomLocks();
-
-        getDiffLevel();
-
-        //TODO add in difficulty level
-
     }
 
     public void provideHint(int indexDir) {
@@ -136,8 +142,6 @@ public class Display extends JPanel {
 //        } else if (!theDoor.getOptionD().equals(theDoor.getAnswer())) {
 //            optionD.setVisible(false);
 //        }
-
-
 
     }
 
@@ -190,263 +194,6 @@ public class Display extends JPanel {
         return icon;
     }
 
-    @Override
-    public void paintComponent (Graphics g) {
-//        JPanel mapPanel = new JPanel();
-//        mapPanel.setBounds(0, 0, 421, 396);
-//        mapPanel.setBackground(Color.WHITE);
-//        add(mapPanel);
-        super.paintComponent(g);
-        Room [][] mazeMap = myMaze.getMaze();
-        Graphics2D g2d = (Graphics2D) g;
-        playerIcon = new ImageIcon(charImage);
-
-        //draw border for playing field
-        g2d.setColor(Color.YELLOW); //sets the border/line to yellow
-
-        //scales the player icon down a little bit.
-        Image image = playerIcon.getImage();
-        Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
-        playerIcon = new ImageIcon(newing);
-
-        int boxWidth = 70;
-        int boxHeight = 70;
-        for (int currentX = 0; currentX < mazeMap.length * boxWidth; currentX += boxWidth) {
-            for (int currentY = 0; currentY < mazeMap[0].length * boxHeight; currentY += boxHeight) {
-                g2d.drawRect(currentX, currentY, boxWidth, boxHeight);
-                if (currentX == myMaze.getX() * boxWidth && currentY == myMaze.getY() * boxHeight) {
-                    g2d.drawImage(playerIcon.getImage(), currentX + boxWidth/2 - playerIcon.getIconWidth()/2,
-                            currentY + boxHeight/2 - playerIcon.getIconHeight()/2, null);
-                }
-            }
-        }
-
-
-        g.setColor(Color.LIGHT_GRAY);
-        try {
-            drawLock(g);
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    void drawLock(Graphics g) throws IOException, InterruptedException {
-        Graphics2D g2d = (Graphics2D) g;
-
-        Room [][] mazeMap = myMaze.getMaze();
-        lockIcon = new ImageIcon("images/lock.png");
-        Image image = lockIcon.getImage();
-        Image newing = image.getScaledInstance(23, 23, java.awt.Image.SCALE_SMOOTH);
-        lockIcon = new ImageIcon(newing);
-
-
-        int boxWidth = 70;
-        int boxHeight = 70;
-        for (int i = 0; i < mazeMap.length; i++) { //want to go through each room.
-            for (int j = 0; j < mazeMap[i].length; j++) {
-                for (int doorIndex = 0; doorIndex < 4; doorIndex++) {
-                    int xCoords = i * boxWidth;
-                    int yCoords = j * boxHeight;
-                    if (myMaze.getRoom(i, j).getDoor(doorIndex) != null && myMaze.getRoom(i, j).getDoor(doorIndex).getForeverLocked()) {
-                        if (doorIndex == Room.NORTH_INDEX) { //north
-                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 - lockIcon.getIconWidth()/2,
-                                    yCoords + boxHeight/2 - lockIcon.getIconHeight() - 26, null);
-                        } else if (doorIndex == Room.EAST_INDEX) { //east
-                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 + lockIcon.getIconWidth() + 2,
-                                    yCoords + boxHeight/2 - lockIcon.getIconHeight()/2, null);
-                        } else if (doorIndex == Room.SOUTH_INDEX) { //south
-                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 - lockIcon.getIconWidth()/2,
-                                    yCoords + boxHeight/2 + lockIcon.getIconHeight() - 2, null);
-                        } else { //west
-                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 - lockIcon.getIconWidth() - 22,
-                                    yCoords + boxHeight/2 - lockIcon.getIconHeight()/2, null);
-                        }
-                    }
-                }
-            }
-        }
-        drawRoomBox(g);
-    }
-
-    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
-
-        boolean setButtonsInvisible = false;
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.YELLOW);
-        g2d.drawRect(488, 104, 150, 150);
-
-
-        //TODO add in more logic to end game
-
-
-        if ((!myMaze.display(Direction.NORTH) || myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.WEST) || myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.SOUTH) || myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.EAST) || myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getForeverLocked())) {
-            //JOptionPane.showMessageDialog(null, "You lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            //System.out.println("You lose!");
-
-            //String name = JOptionPane.showInputDialog("Almost there! What is your name?");
-            nameVal = JOptionPane.showInputDialog("Almost there! What is your name?");
-            String nameAndScore = "Congratulations " + nameVal + " you scored " + scoreVal + " points.";
-            JOptionPane.showMessageDialog(null, nameAndScore);
-
-            leaderboard();
-
-            setButtonsInvisible = true;
-
-            //exit(0);
-        }
-
-        if (myMaze.getX() == 4 && myMaze.getY() == 4) {
-            nameVal = JOptionPane.showInputDialog("You won! What is your name?");
-            String nameAndScore = "Congratulations " + nameVal + " you scored " + scoreVal + " points.";
-            JOptionPane.showMessageDialog(null, nameAndScore);
-            setButtonsInvisible = true;
-
-            leaderboard();
-
-            //exit(0);
-        }
-
-
-        //add(scoreField);
-
-
-       // createDoorButtons();
-        createNorthDoor(); //create north door
-        createWestDoor(); //create west door
-        createSouthDoor(); //create south door
-        createEastDoor(); //create east door
-        addListeners(); //method for button listener.
-        drawQuestionArea(g); //drawing rectangle where we put our question in.
-
-        if (setButtonsInvisible) {
-            mySouthDoor.setVisible(false);
-            myEastDoor.setVisible(false);
-            myNorthDoor.setVisible(false);
-            myWestDoor.setVisible(false);
-        }
-
-    }
-
-    public String getNameVal() {
-        return nameVal;
-    }
-
-    public int getScoreVal() {
-        return scoreVal;
-    }
-
-
-
-    public void leaderboard () throws IOException, IOException, InterruptedException {
-
-        int numLeaders = 1;
-
-        TreeMap<Integer, String> leader = new TreeMap<>(Collections.reverseOrder());
-
-        String filename = "Leaderboard.txt";
-        Scanner scanner = new Scanner(new File(filename));
-        //scanner.useDelimiter(" ");
-
-        while (scanner.hasNext()) {
-            Integer inScore = scanner.nextInt();
-            String inName = scanner.nextLine();
-            inName = inName.trim();
-
-            System.out.println("Name:" + inName);
-
-            leader.put(inScore, inName);
-        }
-
-        if (!nameVal.equals("")) {
-            leader.put(scoreVal, nameVal);
-        }
-
-
-        scanner.close();
-
-        StringBuilder sb = new StringBuilder("Leader Board\n");
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-
-        for (Map.Entry<Integer, String> entry: leader.entrySet()) {
-            writer.write(entry.getKey() + " " + entry.getValue() + "\n");
-            //System.out.println(entry.getKey() + " " + entry.getValue());
-
-            if (entry.getKey() <= 9) {
-                sb.append(numLeaders + ". Score: " + entry.getKey() + "   Name: " + entry.getValue() + "\n");
-            } else {
-                sb.append(numLeaders + ". Score: " + entry.getKey() + " Name: " + entry.getValue() + "\n");
-            }
-
-
-            numLeaders++;
-        }
-
-        JTextArea scoreTextField = new JTextArea(sb.toString());
-        scoreTextField.setBounds(0,0, 800, 800);
-        //scoreTextField.setHorizontalAlignment(JTextField.CENTER);
-        scoreTextField.setFont(new Font("Geneva", Font.BOLD, 40));
-        scoreTextField.setBackground(Color.BLACK);
-        scoreTextField.setForeground(Color.YELLOW);
-        add(scoreTextField);
-
-        //scoreTextField.wait(10000);
-
-        //Thread.sleep(10000);
-
-
-
-        //JOptionPane.showMessageDialog(null, sb.toString());
-        writer.close();
-
-
-
-    }
-
-
-
-
-    void drawQuestionArea(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.CYAN);
-        g2d.setStroke(new BasicStroke(6));
-        g2d.drawRect(80, 410, 636, 335);
-
-        //displayRoomNumber();
-
-
-        ImageIcon myDeadpoolIcon = new ImageIcon("images/deadpoolLay2.png");
-        Image image = myDeadpoolIcon.getImage();
-        Image newing = image.getScaledInstance(300, 200, java.awt.Image.SCALE_SMOOTH);
-        myDeadpoolIcon = new ImageIcon(newing);
-        g2d.drawImage(myDeadpoolIcon.getImage(), 350, 245, null);
-
-        drawDeadpoolStool(g);
-        displayRoomNumber(); //a jlabel that will display what room we're in.
-    }
-
-    void drawDeadpoolStool(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.CYAN);
-        g2d.setStroke(new BasicStroke(6));
-        g2d.drawRect(370, 399, 50, 10);
-    }
-
-    public void displayRoomNumber() {
-        myJTextRoom = new JLabel();
-        myJTextRoom.setBounds(425, 36, 360, 31);
-        myJTextRoom.setBackground(Color.BLACK);
-        myJTextRoom.setForeground(Color.MAGENTA);
-        myJTextRoom.setFont(new Font("Aharoni", Font.PLAIN, 20));
-        myJTextRoom.setText("You are currently at Room: " + myMaze.getCurrentRoom().getRoomNumber());
-        add(myJTextRoom);
-    }
-
-
     public void createNorthDoor() {
         doorIcon = new ImageIcon("images/door.png");
 
@@ -463,7 +210,7 @@ public class Display extends JPanel {
             myNorthDoor.setBackground(Color.GRAY);
             myNorthDoor.setOpaque(true);
             myNorthDoor.setEnabled(false);
-           // System.out.println("calling");
+            // System.out.println("calling");
         } else {
             //System.out.println("North door open");
             myNorthDoor.setEnabled(true);
@@ -488,7 +235,7 @@ public class Display extends JPanel {
             myWestDoor.setOpaque(true);
             myWestDoor.setEnabled(false);
         } else {
-        //    System.out.println("West door open");
+            //    System.out.println("West door open");
             myWestDoor.setEnabled(true);
             myWestDoor.setBorderPainted(false);
         }
@@ -555,30 +302,16 @@ public class Display extends JPanel {
                 removeAll();
                 revalidate();
                 repaint();
+                createNorthDoor();
+                createEastDoor();
+                createWestDoor();
+                createSouthDoor();
+                addListeners();
             } else {
                 timer.start();
-
-                myEastDoor.setEnabled(false);
-                myEastDoor.setBackground(Color.GRAY);
-                myEastDoor.setOpaque(true);
-
-                myWestDoor.setEnabled(false);
-                myWestDoor.setBackground(Color.GRAY);
-                myWestDoor.setOpaque(true);
-
-                myNorthDoor.setEnabled(false);
-                myNorthDoor.setBackground(Color.GRAY);
-                myNorthDoor.setOpaque(true);
-
-                mySouthDoor.setEnabled(false);
-                mySouthDoor.setBackground(Color.GRAY);
-                mySouthDoor.setOpaque(true);
-
+                turnDoorButtonsOFF();
                 createQuestionLayout(Direction.NORTH);
-
-                //timer.stop();
                 revalidate();
-
             }
             //timer.stop();
             System.out.println(myMaze.getY());
@@ -592,29 +325,19 @@ public class Display extends JPanel {
                 removeAll();
                 revalidate();
                 repaint();
+                createNorthDoor();
+                createEastDoor();
+                createWestDoor();
+                createSouthDoor();
+                addListeners();
             } else {
                 timer.start();
 
-                myEastDoor.setEnabled(false);
-                myEastDoor.setBackground(Color.GRAY);
-                myEastDoor.setOpaque(true);
-
-                myWestDoor.setEnabled(false);
-                myWestDoor.setBackground(Color.GRAY);
-                myWestDoor.setOpaque(true);
-
-                myNorthDoor.setEnabled(false);
-                myNorthDoor.setBackground(Color.GRAY);
-                myNorthDoor.setOpaque(true);
-
-                mySouthDoor.setEnabled(false);
-                mySouthDoor.setBackground(Color.GRAY);
-                mySouthDoor.setOpaque(true);
+                turnDoorButtonsOFF();
 
                 createQuestionLayout(Direction.EAST);
 
                 //timer.stop();
-                revalidate();
 
             }
             //timer.stop();
@@ -645,25 +368,17 @@ public class Display extends JPanel {
                 removeAll();
                 revalidate();
                 repaint();
+                createNorthDoor();
+                createEastDoor();
+                createWestDoor();
+                createSouthDoor();
+                addListeners();
             } else {
 
                 timer.start();
 
-                myEastDoor.setEnabled(false);
-                myEastDoor.setBackground(Color.GRAY);
-                myEastDoor.setOpaque(true);
+                turnDoorButtonsOFF();
 
-                myWestDoor.setEnabled(false);
-                myWestDoor.setBackground(Color.GRAY);
-                myWestDoor.setOpaque(true);
-
-                myNorthDoor.setEnabled(false);
-                myNorthDoor.setBackground(Color.GRAY);
-                myNorthDoor.setOpaque(true);
-
-                mySouthDoor.setEnabled(false);
-                mySouthDoor.setBackground(Color.GRAY);
-                mySouthDoor.setOpaque(true);
                 createQuestionLayout(Direction.SOUTH);
 
                 //timer.stop();
@@ -686,31 +401,22 @@ public class Display extends JPanel {
                 removeAll();
                 revalidate();
                 repaint();
+                createNorthDoor();
+                createEastDoor();
+                createWestDoor();
+                createSouthDoor();
+                addListeners();
             } else {
                 timer.start();
 
-                myEastDoor.setEnabled(false);
-                myEastDoor.setBackground(Color.GRAY);
-                myEastDoor.setOpaque(true);
-
-                myWestDoor.setEnabled(false);
-                myWestDoor.setBackground(Color.GRAY);
-                myWestDoor.setOpaque(true);
-
-                myNorthDoor.setEnabled(false);
-                myNorthDoor.setBackground(Color.GRAY);
-                myNorthDoor.setOpaque(true);
-
-                mySouthDoor.setEnabled(false);
-                mySouthDoor.setBackground(Color.GRAY);
-                mySouthDoor.setOpaque(true);
+                turnDoorButtonsOFF();
 
                 createQuestionLayout(Direction.WEST);
                 //timer.stop();
                 revalidate();
             }
             //timer.stop();
-           // System.out.println(myMaze.getCurrentRoom().getRoomNumber());
+            // System.out.println(myMaze.getCurrentRoom().getRoomNumber());
             System.out.println(myMaze.getX());
         });
 
@@ -870,13 +576,13 @@ public class Display extends JPanel {
         optionB.setFocusable(false);
         optionB.setText("B");
 
-      //  optionC.setBounds(90,642,40,40);
+        //  optionC.setBounds(90,642,40,40);
         optionC.setBounds(0, 222, 44, 40);
         optionC.setFont(new Font("MV Boli",Font.BOLD,10));
         optionC.setFocusable(false);
         optionC.setText("C");
 
-       // optionD.setBounds(90,693,40,40);
+        // optionD.setBounds(90,693,40,40);
         optionD.setBounds(0, 273, 44, 40);
         optionD.setFont(new Font("MV Boli",Font.BOLD,10));
         optionD.setFocusable(false);
@@ -888,21 +594,21 @@ public class Display extends JPanel {
         answer_labelA.setFont(new Font("MV Boli",Font.PLAIN,20));
         answer_labelA.setText(door.getOptionA());
 
-       // answer_labelB.setBounds(140,591,566,40);
+        // answer_labelB.setBounds(140,591,566,40);
         answer_labelB.setBounds(50, 171, 566, 40);
         answer_labelB.setBackground(new Color(50,50,50));
         answer_labelB.setForeground(new Color(230,230,250));
         answer_labelB.setFont(new Font("MV Boli",Font.PLAIN,20));
         answer_labelB.setText(door.getOptionB());
 
-      //  answer_labelC.setBounds(140,642,566,40);
+        //  answer_labelC.setBounds(140,642,566,40);
         answer_labelC.setBounds(50, 222, 566, 40);
         answer_labelC.setBackground(new Color(50,50,50));
         answer_labelC.setForeground(new Color(230,230,250));
         answer_labelC.setFont(new Font("MV Boli",Font.PLAIN,20));
         answer_labelC.setText(door.getOptionC());
 
-      //  answer_labelD.setBounds(140,693,566,40);
+        //  answer_labelD.setBounds(140,693,566,40);
         answer_labelD.setBounds(50, 273, 566, 40);
         answer_labelD.setBackground(new Color(50,50,50));
         answer_labelD.setForeground(new Color(230,230,250));
@@ -962,13 +668,13 @@ public class Display extends JPanel {
 
         Door theDoor = myMaze.getCurrentRoom().getDoor(index);
         optionA.addActionListener(e -> {
-       //     System.out.println("HI");
+            //     System.out.println("HI");
             if (!theDoor.getOptionA().equals(theDoor.getAnswer())) {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
             } else {
-           //     System.out.println("Cool they got it right");
+                //     System.out.println("Cool they got it right");
                 timer.stop();
                 scoreVal += countDownSec[0];
                 //scoreField.setText("Score: " + scoreVal);
@@ -981,16 +687,22 @@ public class Display extends JPanel {
             removeAll();
             revalidate();
             repaint();
+
+            createNorthDoor();
+            createEastDoor();
+            createWestDoor();
+            createSouthDoor();
+            addListeners();
         });
 
         optionB.addActionListener(e -> {
-        //    System.out.println("HI");
+            //    System.out.println("HI");
             if (!theDoor.getOptionB().equals(theDoor.getAnswer())) {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
             } else {
-            //    System.out.println("Cool they got it right");
+                //    System.out.println("Cool they got it right");
                 timer.stop();
                 scoreVal += countDownSec[0];
                 //scoreField.setText("Score: " + scoreVal);
@@ -1003,16 +715,22 @@ public class Display extends JPanel {
             removeAll();
             revalidate();
             repaint();
+
+            createNorthDoor();
+            createEastDoor();
+            createWestDoor();
+            createSouthDoor();
+            addListeners();
         });
 
         optionC.addActionListener(e -> {
-        //   System.out.println("HI");
+            //   System.out.println("HI");
             if (!theDoor.getOptionC().equals(theDoor.getAnswer())) {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
             } else {
-          //      System.out.println("Cool they got it right");
+                //      System.out.println("Cool they got it right");
                 timer.stop();
                 scoreVal += countDownSec[0];
                 //scoreField.setText("Score: " + scoreVal);
@@ -1025,16 +743,22 @@ public class Display extends JPanel {
             removeAll();
             revalidate();
             repaint();
+
+            createNorthDoor();
+            createEastDoor();
+            createWestDoor();
+            createSouthDoor();
+            addListeners();
         });
 
         optionD.addActionListener(e -> {
-       //     System.out.println("HI");
+            //     System.out.println("HI");
             if (!theDoor.getOptionD().equals(theDoor.getAnswer())) {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
             } else {
-         //       System.out.println("Cool they got it right");
+                //       System.out.println("Cool they got it right");
                 timer.stop();
                 scoreVal += countDownSec[0];
                 //scoreField.setText("Score: " + scoreVal);
@@ -1047,14 +771,286 @@ public class Display extends JPanel {
             removeAll();
             revalidate();
             repaint();
+
+            createNorthDoor();
+            createEastDoor();
+            createWestDoor();
+            createSouthDoor();
+            addListeners();
         });
 
 //        timer.stop();
     }
 
 
-    public void setPlayerIcon(final ImageIcon theFileName) {
-         playerIcon = theFileName;
+
+
+    @Override
+    public void paintComponent (Graphics g) {
+//        JPanel mapPanel = new JPanel();
+//        mapPanel.setBounds(0, 0, 421, 396);
+//        mapPanel.setBackground(Color.WHITE);
+//        add(mapPanel);
+        super.paintComponent(g);
+        Room [][] mazeMap = myMaze.getMaze();
+        Graphics2D g2d = (Graphics2D) g;
+        playerIcon = new ImageIcon(charImage);
+
+        //draw border for playing field
+        g2d.setColor(Color.YELLOW); //sets the border/line to yellow
+
+        //scales the player icon down a little bit.
+        Image image = playerIcon.getImage();
+        Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
+        playerIcon = new ImageIcon(newing);
+
+        int boxWidth = 70;
+        int boxHeight = 70;
+        for (int currentX = 0; currentX < mazeMap.length * boxWidth; currentX += boxWidth) {
+            for (int currentY = 0; currentY < mazeMap[0].length * boxHeight; currentY += boxHeight) {
+                g2d.drawRect(currentX, currentY, boxWidth, boxHeight);
+                if (currentX == myMaze.getX() * boxWidth && currentY == myMaze.getY() * boxHeight) {
+                    g2d.drawImage(playerIcon.getImage(), currentX + boxWidth/2 - playerIcon.getIconWidth()/2,
+                            currentY + boxHeight/2 - playerIcon.getIconHeight()/2, null);
+                }
+            }
+        }
+
+
+        g.setColor(Color.LIGHT_GRAY);
+        try {
+            drawLock(g);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void drawLock(Graphics g) throws IOException, InterruptedException {
+        Graphics2D g2d = (Graphics2D) g;
+
+        Room [][] mazeMap = myMaze.getMaze();
+        lockIcon = new ImageIcon("images/lock.png");
+        Image image = lockIcon.getImage();
+        Image newing = image.getScaledInstance(23, 23, java.awt.Image.SCALE_SMOOTH);
+        lockIcon = new ImageIcon(newing);
+
+
+        int boxWidth = 70;
+        int boxHeight = 70;
+        for (int i = 0; i < mazeMap.length; i++) { //want to go through each room.
+            for (int j = 0; j < mazeMap[i].length; j++) {
+                for (int doorIndex = 0; doorIndex < 4; doorIndex++) {
+                    int xCoords = i * boxWidth;
+                    int yCoords = j * boxHeight;
+                    if (myMaze.getRoom(i, j).getDoor(doorIndex) != null && myMaze.getRoom(i, j).getDoor(doorIndex).getForeverLocked()) {
+                        if (doorIndex == Room.NORTH_INDEX) { //north
+                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 - lockIcon.getIconWidth()/2,
+                                    yCoords + boxHeight/2 - lockIcon.getIconHeight() - 26, null);
+                        } else if (doorIndex == Room.EAST_INDEX) { //east
+                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 + lockIcon.getIconWidth() + 2,
+                                    yCoords + boxHeight/2 - lockIcon.getIconHeight()/2, null);
+                        } else if (doorIndex == Room.SOUTH_INDEX) { //south
+                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 - lockIcon.getIconWidth()/2,
+                                    yCoords + boxHeight/2 + lockIcon.getIconHeight() - 2, null);
+                        } else { //west
+                            g2d.drawImage(lockIcon.getImage(), xCoords + boxWidth/2 - lockIcon.getIconWidth() - 22,
+                                    yCoords + boxHeight/2 - lockIcon.getIconHeight()/2, null);
+                        }
+                    }
+                }
+            }
+        }
+        drawRoomBox(g);
+    }
+
+    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
+
+        boolean setButtonsInvisible = false;
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.YELLOW);
+        g2d.drawRect(488, 104, 150, 150);
+
+
+        //TODO add in more logic to end game
+
+
+        if ((!myMaze.display(Direction.NORTH) || myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())
+                && (!myMaze.display(Direction.WEST) || myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getForeverLocked())
+                && (!myMaze.display(Direction.SOUTH) || myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getForeverLocked())
+                && (!myMaze.display(Direction.EAST) || myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getForeverLocked())) {
+            //JOptionPane.showMessageDialog(null, "You lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            //System.out.println("You lose!");
+
+            //String name = JOptionPane.showInputDialog("Almost there! What is your name?");
+            nameVal = JOptionPane.showInputDialog("Almost there! What is your name?");
+            String nameAndScore = "Congratulations " + nameVal + " you scored " + scoreVal + " points.";
+            JOptionPane.showMessageDialog(null, nameAndScore);
+
+            leaderboard();
+
+            setButtonsInvisible = true;
+
+            //exit(0);
+        }
+
+        if (myMaze.getX() == 4 && myMaze.getY() == 4) {
+            nameVal = JOptionPane.showInputDialog("You won! What is your name?");
+            String nameAndScore = "Congratulations " + nameVal + " you scored " + scoreVal + " points.";
+            JOptionPane.showMessageDialog(null, nameAndScore);
+            setButtonsInvisible = true;
+
+            leaderboard();
+
+            //exit(0);
+        }
+
+
+        //add(scoreField);
+
+
+       // createDoorButtons();
+
+        if (setButtonsInvisible) {
+            mySouthDoor.setVisible(false);
+            myEastDoor.setVisible(false);
+            myNorthDoor.setVisible(false);
+            myWestDoor.setVisible(false);
+        }
+        drawQuestionArea(g);
+    }
+
+    public String getNameVal() {
+        return nameVal;
+    }
+
+    public int getScoreVal() {
+        return scoreVal;
+    }
+
+
+
+    public void leaderboard () throws IOException, IOException, InterruptedException {
+
+        int numLeaders = 1;
+
+        TreeMap<Integer, String> leader = new TreeMap<>(Collections.reverseOrder());
+
+        String filename = "Leaderboard.txt";
+        Scanner scanner = new Scanner(new File(filename));
+        //scanner.useDelimiter(" ");
+
+        while (scanner.hasNext()) {
+            Integer inScore = scanner.nextInt();
+            String inName = scanner.nextLine();
+            inName = inName.trim();
+
+            System.out.println("Name:" + inName);
+
+            leader.put(inScore, inName);
+        }
+
+        if (!nameVal.equals("")) {
+            leader.put(scoreVal, nameVal);
+        }
+
+
+        scanner.close();
+
+        StringBuilder sb = new StringBuilder("Leader Board\n");
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+        for (Map.Entry<Integer, String> entry: leader.entrySet()) {
+            writer.write(entry.getKey() + " " + entry.getValue() + "\n");
+            //System.out.println(entry.getKey() + " " + entry.getValue());
+
+            if (entry.getKey() <= 9) {
+                sb.append(numLeaders + ". Score: " + entry.getKey() + "   Name: " + entry.getValue() + "\n");
+            } else {
+                sb.append(numLeaders + ". Score: " + entry.getKey() + " Name: " + entry.getValue() + "\n");
+            }
+
+
+            numLeaders++;
+        }
+
+        JTextArea scoreTextField = new JTextArea(sb.toString());
+        scoreTextField.setBounds(0,0, 800, 800);
+        //scoreTextField.setHorizontalAlignment(JTextField.CENTER);
+        scoreTextField.setFont(new Font("Geneva", Font.BOLD, 40));
+        scoreTextField.setBackground(Color.BLACK);
+        scoreTextField.setForeground(Color.YELLOW);
+        add(scoreTextField);
+
+        //scoreTextField.wait(10000);
+
+        //Thread.sleep(10000);
+
+
+
+        //JOptionPane.showMessageDialog(null, sb.toString());
+        writer.close();
+
+
+
+    }
+
+
+
+
+    void drawQuestionArea(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.CYAN);
+        g2d.setStroke(new BasicStroke(6));
+        g2d.drawRect(80, 410, 636, 335);
+
+        //displayRoomNumber();
+
+
+        ImageIcon myDeadpoolIcon = new ImageIcon("images/deadpoolLay2.png");
+        Image image = myDeadpoolIcon.getImage();
+        Image newing = image.getScaledInstance(300, 200, java.awt.Image.SCALE_SMOOTH);
+        myDeadpoolIcon = new ImageIcon(newing);
+        g2d.drawImage(myDeadpoolIcon.getImage(), 350, 245, null);
+
+        drawDeadpoolStool(g);
+        displayRoomNumber(); //a jlabel that will display what room we're in.
+    }
+
+    void drawDeadpoolStool(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.CYAN);
+        g2d.setStroke(new BasicStroke(6));
+        g2d.drawRect(370, 399, 50, 10);
+    }
+
+    public void displayRoomNumber() {
+        myJTextRoom = new JLabel();
+        myJTextRoom.setBounds(425, 36, 360, 31);
+        myJTextRoom.setBackground(Color.BLACK);
+        myJTextRoom.setForeground(Color.MAGENTA);
+        myJTextRoom.setFont(new Font("Aharoni", Font.PLAIN, 20));
+        myJTextRoom.setText("You are currently at Room: " + myMaze.getCurrentRoom().getRoomNumber());
+        add(myJTextRoom);
+    }
+
+    private void turnDoorButtonsOFF() {
+        myEastDoor.setEnabled(false);
+        myEastDoor.setBackground(Color.GRAY);
+        myEastDoor.setOpaque(true);
+
+        myWestDoor.setEnabled(false);
+        myWestDoor.setBackground(Color.GRAY);
+        myWestDoor.setOpaque(true);
+
+        myNorthDoor.setEnabled(false);
+        myNorthDoor.setBackground(Color.GRAY);
+        myNorthDoor.setOpaque(true);
+
+        mySouthDoor.setEnabled(false);
+        mySouthDoor.setBackground(Color.GRAY);
+        mySouthDoor.setOpaque(true);
     }
 
 
