@@ -167,22 +167,20 @@ public class Display extends JPanel {
     }
 
     public void randomLocks() {
-        myMaze.setLocation(1, 1);
-        myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(1, 1).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(1, 2).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
 
-        myMaze.setLocation(2, 3);
-        myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(2, 3).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(2, 4).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
 
-        myMaze.setLocation(4, 2);
-        myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(4, 2).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(4, 3).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
 
-        myMaze.setLocation(0, 3);
-        myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(0, 3).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(0, 4).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
 
-        myMaze.setLocation(3, 0);
-        myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
-
-        myMaze.setLocation(0,0);
+        myMaze.getRoom(3, 0).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
+        myMaze.getRoom(3, 1).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
     }
 
     public Icon getImageResized(String pictureName) {
