@@ -507,7 +507,7 @@ public class Display extends JPanel {
         } else if (theDir == Direction.SOUTH) {
             index = Room.SOUTH_INDEX;
         } else {
-            index = Room.SOUTH_INDEX;
+            index = Room.WEST_INDEX;
         }
 
         Door door = myMaze.getCurrentRoom().getDoor(index);
