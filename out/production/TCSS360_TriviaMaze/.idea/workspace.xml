@@ -5,19 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65f9d4b5-658a-43bc-a293-f5de55284908" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/TCSS360_TriviaMaze.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TCSS360_TriviaMaze.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/Door.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Door.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/Maze.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Maze.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Question.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/TCSS360_TriviaMaze.iml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/TCSS360_TriviaMaze.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/model/Door.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/model/Door.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/model/Question.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/model/Question.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/Display.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/QuestionPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/QuestionPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/TriviaMazeView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/TriviaMazeView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/view/Display.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/QuestionPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/view/QuestionPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/TriviaMazeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/view/TriviaMazeView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +46,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.23333333&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.GUI">
+  <component name="RunManager" selected="Application.controller.GUI">
     <configuration name="GUI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.GUI" />
       <extension name="coverage">
@@ -97,6 +85,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="controller.GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="controller.GUI" />
+      <module name="TCSS360_TriviaMaze" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -111,6 +112,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.controller.GUI" />
         <item itemvalue="Application.GUI" />
         <item itemvalue="Application.View.GUI" />
         <item itemvalue="Application.GUI (1)" />
