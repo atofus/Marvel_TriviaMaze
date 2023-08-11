@@ -71,6 +71,7 @@ public class Display extends JPanel {
     private boolean optionBVisibilityHint = true;
     private boolean optionCVisibilityHint = true;
     private boolean optionDVisibilityHint = true;
+    private JLabel myFinishLabel;
 
     public Display() {
         question = new Question();
@@ -908,6 +909,12 @@ public class Display extends JPanel {
                 }
             }
         }
+
+        myFinishLabel = new JLabel("<--- Finish Here to WIN some Chimichangas! ;)");
+        myFinishLabel.setFont((new Font("Comic Sans MS", Font.BOLD, 14)));
+        myFinishLabel.setBounds(365, 280, 400, 37);
+        myFinishLabel.setForeground(Color.RED);
+        add(myFinishLabel);
 
 
         g.setColor(Color.LIGHT_GRAY);
