@@ -436,9 +436,7 @@ public class Display extends JPanel {
                 repeat();
             } else {
                 timer.start();
-
                 turnDoorButtonsOFF();
-
                 createQuestionLayout(Direction.EAST);
 
                 //timer.stop();
