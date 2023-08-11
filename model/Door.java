@@ -1,10 +1,15 @@
 package model;
 
-import view.DBQuestions;
+import model.DBQuestions;
 import view.Display;
 
-public class Door {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class Door implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -2328691798472437421L;
     private boolean myLock;
     private boolean myForeverLocked;
 

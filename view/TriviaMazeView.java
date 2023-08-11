@@ -2,6 +2,7 @@ package view;
 
 import extraFiles.MapPanel;
 import extraFiles.RoomPanel;
+import model.Maze;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,38 +40,16 @@ public class TriviaMazeView extends JFrame {
     private JMenuItem myHint;
 
     private Display panel;
-   // TestingDisplay panel = new TestingDisplay();
+    private Maze myMaze;
 
-
-//    myFrame() {
-//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        this.setSize(500, 500);
-//        this.setLocationRelativeTo(null);
-//        this.setVisible(true);
-//    }
 
     public TriviaMazeView() {
-//        MapPanel playingField = new MapPanel();
-//        //playingField.setBackground(Color.LIGHT_GRAY);
-//        playingField.setBounds(50, 47, 421, 396);
-//        playingField.setBackground(Color.BLACK);
-//        //playingField.setPreferredSize(new Dimension(421, 396));
-//        playingField.setLayout(null);
-//        add(getContentPane().add(playingField));
-//
-//
-//        RoomPanel roomPanel = new RoomPanel();
-//        roomPanel.setBounds(540, 137, 200, 200);
-//        roomPanel.setBackground(Color.BLACK);
-//       // roomPanel.setPreferredSize(new Dimension(400, 400));
-//        roomPanel.setLayout(null);
-//        add(getContentPane().add(roomPanel));
-
         panel = new Display();
         panel.setBackground(Color.BLACK);
         panel.setLayout(null);
         panel.setBounds(50, 47, 780, 785);
-        //panel.setBounds(0,0, 900, 900);
+
+        myMaze = Maze.getMyInstance();
 
         panel.setBackground(Color.BLACK);
         panel.setLayout(null);
@@ -98,8 +77,52 @@ public class TriviaMazeView extends JFrame {
     }
 
     public void actionListeners() {
+        mySave.addActionListener(e -> {
+
+            String filename = "";
+            String[] options = {"Game 1" , "Game 2", "Game 3"};
+            int choice = JOptionPane.showOptionDialog(null,
+                    "Where would you like to save?",  "Save Game",
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, null);
+
+            if (choice == 0) {
+                filename = "saveGame1.ser";
+            } else if (choice == 1) {
+                filename = "saveGame2.ser";
+            } else if (choice == 2) {
+                filename = "saveGame3.ser";
+            }
+
+            panel.serialize(filename);
+        });
+
+        myLoad.addActionListener(e -> {
+            String filename = "";
+            String[] options = {"Game 1", "Game 2", "Game 3"};
+            int choice = JOptionPane.showOptionDialog(null,
+                    "Which game would you like to load?", "Load Game",
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, null);
+
+            if (choice == 0) {
+                filename = "saveGame1.ser";
+            } else if (choice == 1) {
+                filename = "saveGame2.ser";
+            } else if (choice == 2) {
+                filename = "saveGame3.ser";
+            }
+
+            try {
+                panel.deserialize(filename);
+            } catch (RuntimeException re) {
+                JOptionPane.showMessageDialog(null, "You can't load an empty game.");
+            }
+        });
+
+
         myScore.addActionListener(e -> {
-            String nameAndScore = "Your current score is " + panel.getScoreVal() + " points.";
+            String nameAndScore = "Your current score is " + myMaze.getScore() + " points.";
             JOptionPane.showMessageDialog(null, nameAndScore);
         });
 
@@ -112,11 +135,39 @@ public class TriviaMazeView extends JFrame {
         });
 
         myHint.addActionListener(e -> {
+            try {
+                panel.setHint(true);
 
-            panel.setHint(true);
-            repaint();
-            //panel.provideHint(0);
+                panel.provideHint(panel.getQuestion());
+
+                panel.revalidate();
+                panel.repaint();
+            } catch (NullPointerException npe) {
+                JOptionPane.showMessageDialog(null, "Can't use a hint with no question.");
+            }
         });
+
+        myExit.addActionListener(e -> {
+            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to leave?",
+                    "Exit", JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+
+        myInstructions.addActionListener(e -> JOptionPane.showMessageDialog(null,
+                """
+                        If the user is unable to answer a question, that door is then locked permanently. \s
+                        If the user is unable to make it from the entrance to the exit (due to locked doors),\s
+                        the game is lost.""", "Rules", JOptionPane.INFORMATION_MESSAGE));
+
+        myAbout.addActionListener(e -> JOptionPane.showMessageDialog(null,
+                "Created by: \n" +
+                        "-  Alan To \n" +
+                        "-  Aimee Tollett\n" +
+                        "-  Jordan Williams\n" +
+                        "Java Version: JavaSE-17 \n" +
+                        "Created in: August, 2023", "About", JOptionPane.INFORMATION_MESSAGE));
     }
 
     public void readInLeader() throws FileNotFoundException {

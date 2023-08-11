@@ -1,18 +1,19 @@
 package model;
 
-import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 
-import model.Room;
+public class Maze implements Serializable {
 
-public class Maze {
+    @Serial
+    private static final long serialVersionUID = -2641303058682284534L;
 
-    private int rows = 5;
-    private int columns = 5;
+    private final int rows = 5;
+    private final int columns = 5;
+    private String myCharName;
+    private String myCharImage;
 
     private Room[][] myMaze = new Room[rows][columns];
 
@@ -20,25 +21,14 @@ public class Maze {
 
     private int myY = 0;
 
-    private boolean gameStatus = true;
+    private boolean myGameStatus = true;
+    private int myRoomNumber = 1;
+    private int myScoreValue;
 
 
     private final PropertyChangeSupport myPcs;
     //private List<PropertyChangeListener> myListeners;
     private static Maze myInstance = new Maze();
-
-
-
-    public Maze (int theX, int theY) {
-        myX = theX;
-        myY = theY;
-
-        myPcs = new PropertyChangeSupport(this);
-        //myListeners = new ArrayList<>();
-        startGame();
-        roomSetup();
-
-    }
 
 
     public static Maze getMyInstance() {
@@ -51,7 +41,8 @@ public class Maze {
     }
 
     public void startGame() {
-        gameStatus = true;
+        myGameStatus = true;
+        setScore(0);
         setX(0);
         setY(0);
         roomSetup();
@@ -61,8 +52,15 @@ public class Maze {
         myPcs.addPropertyChangeListener(listener);
     }
 
+    public void setScore(final int theScore) {
+        myScoreValue = theScore;
+    }
+
+    public int getScore() {
+        return myScoreValue;
+    }
+
     public void roomSetup() {
-        int roomNumber = 1;
         for (int x = 0; x < rows; ++x) {
             for (int y = 0; y < columns; ++y) {
 
@@ -90,8 +88,8 @@ public class Maze {
                     southDoor = new Door();
                     southDoor.setVisible(true);
                 }
-                myMaze[x][y] = new Room(northDoor, eastDoor, southDoor, westDoor, roomNumber);
-                roomNumber++;
+                myMaze[x][y] = new Room(northDoor, eastDoor, southDoor, westDoor, myRoomNumber);
+                myRoomNumber++;
             }
         }
     }
@@ -131,11 +129,16 @@ public class Maze {
 
 
     public void endGame() {
-        gameStatus = false;
+        myGameStatus = false;
     }
 
     public boolean gameFinished() {
-        return myX == rows - 1 && myY == columns - 1;
+        if (myX == rows - 1 && myY == columns - 1) {
+            endGame();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean display (Direction myDir) {
@@ -234,24 +237,6 @@ public class Maze {
         return myMaze;
     }
 
-//    public void unlockingDoors(final Door theDoor) {
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.NORTH_INDEX))) {
-//            System.out.println("UL NORTH: " + getY());
-//            getRoom(getX(), getY() - 1).getDoor(Room.SOUTH_INDEX).unlock();
-//        }
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.SOUTH_INDEX))) {
-//            System.out.println("UL SOUTH: " + getY());
-//            getRoom(getX(), getY() + 1).getDoor(Room.NORTH_INDEX).unlock();
-//        }
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.WEST_INDEX))) {
-//            System.out.println("UL WEST: " + getX());
-//            getRoom(getX() - 1, getY()).getDoor(Room.EAST_INDEX).unlock();
-//        }
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.EAST_INDEX))) {
-//            System.out.println("UL EAST: " + getX());
-//            getRoom(getX() + 1, getY()).getDoor(Room.WEST_INDEX).unlock();
-//        }
-//    }
 
     public void unlockingDoors(final Direction theDir) {
         if (theDir == Direction.NORTH) {
@@ -269,25 +254,6 @@ public class Maze {
         }
     }
 
-//    public void lockingDoors(final Door theDoor) {
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.NORTH_INDEX))) {
-//            System.out.println("NORTH: " + getY());
-//            getRoom(getX(), getY() - 1).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
-//        }
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.SOUTH_INDEX))) {
-//            System.out.println("SOUTH: " + getY());
-//            getRoom(getX(), getY() + 1).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
-//        }
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.WEST_INDEX))) {
-//            System.out.println("WEST: " + getX());
-//            getRoom(getX() - 1, getY()).getDoor(Room.EAST_INDEX).setForeverLocked(true);
-//        }
-//        if (theDoor.equals(getCurrentRoom().getDoor(Room.EAST_INDEX))) {
-//            System.out.println("EAST: " + getX());
-//            getRoom(getX() + 1, getY()).getDoor(Room.WEST_INDEX).setForeverLocked(true);
-//        }
-//    }
-
     public void lockingDoors(final Direction theDir) {
         if (theDir == Direction.NORTH) {
             System.out.println("NORTH: " + getY());
@@ -303,4 +269,23 @@ public class Maze {
             getRoom(getX() + 1, getY()).getDoor(Room.WEST_INDEX).setForeverLocked(true);
         }
     }
+
+    public void setCharName(String theCharName) {
+        myCharName = theCharName;
+    }
+
+    public String getCharName() {
+        return myCharName;
+    }
+
+    public void setCharImage(String theCharImage) {
+        myCharImage = theCharImage;
+    }
+
+    public String getCharImage() {
+        return myCharImage;
+    }
+
+
+
 }

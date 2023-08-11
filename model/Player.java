@@ -1,9 +1,13 @@
 package model;
 
 
+import java.io.Serial;
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 4511018697266812941L;
     private String playerName;
 
     private int score = 0;

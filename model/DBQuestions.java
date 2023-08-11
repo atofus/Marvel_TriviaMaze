@@ -1,8 +1,10 @@
-package view;
+package model;
 
 import model.Question;
 
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,8 +12,10 @@ import java.sql.Statement;
 import org.sqlite.SQLiteDataSource;
 
 
-public class DBQuestions {
-    private SQLiteDataSource dataSource;
+public class DBQuestions implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -3434517038136172662L;
+    private transient SQLiteDataSource dataSource;
 
     public DBQuestions() {
         dataSource = new SQLiteDataSource();

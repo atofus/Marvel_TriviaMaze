@@ -1,7 +1,12 @@
 package model;
 
-public class Question {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class Question implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -8106800075033028256L;
     private String myQuestion;
     private String myOptionA;
     private String myOptionB;
