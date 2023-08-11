@@ -77,9 +77,13 @@ public class Display extends JPanel {
     private boolean optionCVisibilityHint = true;
     private boolean optionDVisibilityHint = true;
 
+    private boolean newRoom = true;
+
     //private int numPotions = 1;
 
     private DBQuestions myDBQ = new DBQuestions();
+
+    private boolean setButtonsInvisible = false;
 
 
     public Display() {
@@ -293,9 +297,11 @@ public class Display extends JPanel {
         drawRectangle(g);
     }
 
-    void drawRectangle(Graphics g) throws IOException, InterruptedException {
 
-        boolean setButtonsInvisible = false;
+
+    public void drawRectangle(Graphics g) throws IOException, InterruptedException {
+
+
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.YELLOW);
@@ -303,40 +309,67 @@ public class Display extends JPanel {
 //        g2d.setStroke(stroke);
         g2d.drawRect(488, 104, 150, 150);
 
+        //checkMaze();
+
 
         //TODO add in more logic to end game
 
 
-        if ((!myMaze.display(Direction.NORTH) || myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.WEST) || myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.SOUTH) || myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.EAST) || myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getForeverLocked())) {
-            //JOptionPane.showMessageDialog(null, "You lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            //System.out.println("You lose!");
+//        if ((!myMaze.display(Direction.NORTH) || myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())
+////                && (!myMaze.display(Direction.WEST) || myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getForeverLocked())
+////                && (!myMaze.display(Direction.SOUTH) || myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getForeverLocked())
+////                && (!myMaze.display(Direction.EAST) || myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getForeverLocked())) {
+////            //JOptionPane.showMessageDialog(null, "You lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+////            //System.out.println("You lose!");
+////
+////            //String name = JOptionPane.showInputDialog("Almost there! What is your name?");
+////            nameVal = JOptionPane.showInputDialog("Almost there! What is your name?");
+////            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
+////            JOptionPane.showMessageDialog(null, nameAndScore);
+////
+////            leaderboard();
+////
+////            setButtonsInvisible = true;
+////
+////            //exit(0);
+////        }
 
-            //String name = JOptionPane.showInputDialog("Almost there! What is your name?");
-            nameVal = JOptionPane.showInputDialog("Almost there! What is your name?");
-            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
-            JOptionPane.showMessageDialog(null, nameAndScore);
+//        if (myMaze.getX() == 4 && myMaze.getY() == 4) {
+//            nameVal = JOptionPane.showInputDialog("You won! What is your name?");
+//            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
+//            JOptionPane.showMessageDialog(null, nameAndScore);
+//            setButtonsInvisible = true;
+//
+//            leaderboard();
+//
+//            //exit(0);
+//        }
 
-            leaderboard();
+        //checkMaze();
 
-            setButtonsInvisible = true;
+        //TODO fix me!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            //exit(0);
-        }
+//        if (newRoom) {
+//            if (!myMaze.isPossible()) {
+//                System.out.println();
+//                timer.stop();
+//                nameVal = JOptionPane.showInputDialog("Almost there! What is your name?");
+//                String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
+//                JOptionPane.showMessageDialog(null, nameAndScore);
+//
+//                leaderboard();
+//
+//                setButtonsInvisible = true;
+//
+//            } else {
+//                newRoom = false;
+//            }
+//        }
 
-        if (myMaze.getX() == 4 && myMaze.getY() == 4) {
-            nameVal = JOptionPane.showInputDialog("You won! What is your name?");
-            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
-            JOptionPane.showMessageDialog(null, nameAndScore);
-            setButtonsInvisible = true;
 
-            leaderboard();
 
-            //exit(0);
-        }
 
+        //checkMaze();
 
         //add(scoreField);
 
@@ -355,6 +388,51 @@ public class Display extends JPanel {
             myNorthDoor.setVisible(false);
             myWestDoor.setVisible(false);
         }
+
+//        if (setButtonsInvisible) {
+//            mySouthDoor.setVisible(false);
+//            myEastDoor.setVisible(false);
+//            myNorthDoor.setVisible(false);
+//            myWestDoor.setVisible(false);
+//        }
+
+    }
+
+    public void checkMaze() throws IOException, InterruptedException {
+
+
+
+        if (!myMaze.isPossible()) {
+            System.out.println();
+            timer.stop();
+            nameVal = JOptionPane.showInputDialog("Game Over! What is your name?");
+            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
+            JOptionPane.showMessageDialog(null, nameAndScore);
+
+            leaderboard();
+
+            setButtonsInvisible = true;
+
+            //repaint();
+
+        }
+
+        if (myMaze.getX() == 4 && myMaze.getY() == 4) {
+            nameVal = JOptionPane.showInputDialog("You won! What is your name?");
+            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
+            JOptionPane.showMessageDialog(null, nameAndScore);
+            setButtonsInvisible = true;
+
+            leaderboard();
+
+            //repaint();
+
+            //exit(0);
+        }
+
+
+
+        //repaint();
 
     }
 
@@ -425,10 +503,20 @@ public class Display extends JPanel {
 
 
 
+
         //JOptionPane.showMessageDialog(null, sb.toString());
         writer.close();
 
+        //removeAll();
+        revalidate();
+        repaint();
 
+        mySouthDoor.setVisible(false);
+        myEastDoor.setVisible(false);
+        myNorthDoor.setVisible(false);
+        myWestDoor.setVisible(false);
+
+        myJTextRoom.setVisible(false);
 
     }
 
@@ -554,7 +642,7 @@ public class Display extends JPanel {
         Image newing = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
         doorIcon = new ImageIcon(newing);
         myEastDoor = new JButton(doorIcon);
-        myEastDoor.setBackground(Color.RED);
+        myEastDoor.setBackground(Color.GREEN);
         myEastDoor.setOpaque(true);
 
         myEastDoor.setBounds(601, 160, 35, 35);
@@ -562,6 +650,7 @@ public class Display extends JPanel {
             myEastDoor.setBackground(Color.GRAY);
             myEastDoor.setOpaque(true);
             myEastDoor.setEnabled(false);
+            //myEastDoor.setVisible(false);
         } else {
             myEastDoor.setEnabled(true);
             myEastDoor.setBorderPainted(false);
@@ -777,19 +866,19 @@ public class Display extends JPanel {
         JTextField countField = new JTextField();
         if (myMaze.getDifficultyLevel() == 1) {
             countDownSec[0] = 15;
-            countField.setText("Time: 15");
+            //countField.setText("Time: 15");
             //scoreVal += 5;
         } else if (myMaze.getDifficultyLevel() == 2) {
             countDownSec[0] = 10;
-            countField.setText("Time: 10");
+            //countField.setText("Time: 10");
             //scoreVal += 10;
         } else if (myMaze.getDifficultyLevel() == 3) {
             countDownSec[0] = 5;
-            countField.setText("Time: 5");
+            //countField.setText("Time: 5");
             //scoreVal += 15;
         } else {
             countDownSec[0] = 10;
-            countField.setText("Time: 10");
+            //countField.setText("Time: 10");
             //scoreVal += 5;
         }
 
@@ -814,18 +903,20 @@ public class Display extends JPanel {
 
                 System.out.println(countField.getText());
 
-                if (countDownSec[0] == 0) {
+                if (countDownSec[0] == -1) {
                     timer.stop();
                     System.out.println("Locked!");
 
+                    //TODO check question
+
                     Door theDoor = myMaze.getCurrentRoom().getDoor(indexDir);
-                    if (!theDoor.getOptionA().equals(theDoor.getAnswer())) {
+                    if (!question.getOptionA().equals(question.getAnswer())) {
                         optionA.doClick();
-                    } else if (!theDoor.getOptionB().equals(theDoor.getAnswer())) {
+                    } else if (!question.getOptionB().equals(question.getAnswer())) {
                         optionB.doClick();
-                    } else if (!theDoor.getOptionC().equals(theDoor.getAnswer())) {
+                    } else if (!question.getOptionC().equals(question.getAnswer())) {
                         optionC.doClick();
-                    } else if (!theDoor.getOptionD().equals(theDoor.getAnswer())) {
+                    } else if (!question.getOptionD().equals(question.getAnswer())) {
                         optionD.doClick();
                     }
 
@@ -833,6 +924,8 @@ public class Display extends JPanel {
                     //timer = null;
 
                     repaint();
+
+                    timer = null;
                 }
             }
         });
@@ -1085,16 +1178,6 @@ public class Display extends JPanel {
 
     public void addListenersOptions(Direction theDir) {
 
-        //TODO fix me
-
-
-
-
-
-
-
-
-
 
 
         optionA.setEnabled(true);
@@ -1119,6 +1202,7 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+                //checkMaze();
             } else {
            //     System.out.println("Cool they got it right");
                 timer.stop();
@@ -1128,14 +1212,27 @@ public class Display extends JPanel {
 
                 gainPotions();
 
+                //newRoom = true;
+
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+                //checkMaze();
             }
             removeAll();
             revalidate();
             repaint();
+
+            try {
+                checkMaze();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            timer = null;
         });
 
         optionB.addActionListener(e -> {
@@ -1144,6 +1241,7 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+                //checkMaze();
             } else {
             //    System.out.println("Cool they got it right");
                 timer.stop();
@@ -1152,14 +1250,26 @@ public class Display extends JPanel {
                 //scoreField.setText("Score: " + scoreVal);
                 gainPotions();
 
+                //newRoom = true;
+
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+                //checkMaze();
             }
             removeAll();
             revalidate();
             repaint();
+
+            try {
+                checkMaze();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            timer = null;
         });
 
         optionC.addActionListener(e -> {
@@ -1168,6 +1278,7 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+                //checkMaze();
             } else {
           //      System.out.println("Cool they got it right");
                 timer.stop();
@@ -1176,14 +1287,27 @@ public class Display extends JPanel {
                 //scoreField.setText("Score: " + scoreVal);
                 gainPotions();
 
+                //newRoom = true;
+
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+                //checkMaze();
             }
             removeAll();
             revalidate();
             repaint();
+
+            try {
+                checkMaze();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            timer = null;
         });
 
         optionD.addActionListener(e -> {
@@ -1192,6 +1316,7 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+                //checkMaze();
             } else {
          //       System.out.println("Cool they got it right");
                 timer.stop();
@@ -1200,17 +1325,30 @@ public class Display extends JPanel {
                 //scoreField.setText("Score: " + scoreVal);
                 gainPotions();
 
+                //newRoom = true;
+
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+                //checkMaze();
             }
             removeAll();
             revalidate();
             repaint();
+
+            try {
+                checkMaze();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            timer = null;
         });
 
-//        timer.stop();
+        //checkMaze();
     }
 
     public void serialize(String filename) {
@@ -1246,6 +1384,7 @@ public class Display extends JPanel {
             throw new RuntimeException(ex);
         }
 
+        removeAll();
         revalidate();
         repaint();
     }

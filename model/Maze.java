@@ -282,16 +282,74 @@ public class Maze implements Serializable {
 
     public boolean isPossible() {
 
-        return isPossible(4,4);
+        for (int x = 0; x < rows; ++x) {
+            for (int y = 0; y < columns; ++y) {
+                myMaze[x][y].setVisited(false);
+            }
+        }
+
+
+        return isPossibleHelper(myX, myY);
 
     }
 
-    private boolean isPossible (int goalX, int goalY) {
+    public boolean isPossibleHelper (int theX, int theY) {
+
+        if (!myMaze[theX][theY].getVisited()) {
+
+            //System.out.println("Is this getting reached?");
+
+            myMaze[theX][theY].setVisited(true);
+
+            if (theX == 4 && theY == 4) {
+                //System.out.println("Is this getting reached?");
+                return true;
+            }
 
 
 
+            if (myMaze[theX][theY].getDoor(Room.NORTH_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.NORTH_INDEX).getForeverLocked()) {
+                boolean northCheck = isPossibleHelper(theX, theY - 1);
+                if (northCheck) {
+                    return true;
+                }
+                //System.out.println("North called.");
+            }
 
-        return true;
+            if (myMaze[theX][theY].getDoor(Room.SOUTH_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.SOUTH_INDEX).getForeverLocked()) {
+                boolean southCheck = isPossibleHelper(theX, theY + 1);
+                if (southCheck) {
+                    return true;
+                }
+                //System.out.println("South called.");
+            }
+
+            if (myMaze[theX][theY].getDoor(Room.EAST_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.EAST_INDEX).getForeverLocked()) {
+                boolean eastCheck = isPossibleHelper(theX + 1, theY);
+                if (eastCheck) {
+                    return true;
+                }
+                //System.out.println("East called.");
+            }
+
+            if (myMaze[theX][theY].getDoor(Room.WEST_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.WEST_INDEX).getForeverLocked()) {
+                boolean westCheck = isPossibleHelper(theX - 1, theY);
+                if (westCheck) {
+                    return true;
+                }
+                //System.out.println("West called.");
+            }
+
+            //return false;
+
+        }
+
+
+        return false;
     }
 
     public Room[][] getMaze() {
@@ -368,4 +426,6 @@ public class Maze implements Serializable {
             getRoom(getX() + 1, getY()).getDoor(Room.WEST_INDEX).setForeverLocked(true);
         }
     }
+
+
 }

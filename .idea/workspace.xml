@@ -6,6 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="65f9d4b5-658a-43bc-a293-f5de55284908" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leaderboard.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Leaderboard.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Maze.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Maze.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/Leaderboard.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/Leaderboard.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/model/Maze.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/model/Maze.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/saveGame1" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/saveGame1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/Display$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/Display$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/Display.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/TriviaMazeView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TCSS360_TriviaMaze/view/TriviaMazeView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saveGame1" beforeDir="false" afterPath="$PROJECT_DIR$/saveGame1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/view/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/TriviaMazeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/view/TriviaMazeView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
