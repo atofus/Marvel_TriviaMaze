@@ -1,5 +1,6 @@
 package view;
 
+//import extraFiles.SoundPanel;
 import model.*;
 
 import javax.swing.*;
@@ -801,6 +802,8 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+
+                SoundPanel.playLockSound();
             } else {
                 //     System.out.println("Cool they got it right");
                 timer.stop();
@@ -812,6 +815,8 @@ public class Display extends JPanel {
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+
+                SoundPanel.playCorrectAnswerSound();
             }
             removeAll();
             revalidate();
@@ -836,6 +841,8 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+
+                SoundPanel.playLockSound();
             } else {
                 //    System.out.println("Cool they got it right");
                 timer.stop();
@@ -847,6 +854,8 @@ public class Display extends JPanel {
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+
+                SoundPanel.playCorrectAnswerSound();
             }
             removeAll();
             revalidate();
@@ -873,6 +882,8 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+
+                SoundPanel.playLockSound();
             } else {
                 //      System.out.println("Cool they got it right");
                 timer.stop();
@@ -884,6 +895,8 @@ public class Display extends JPanel {
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+
+                SoundPanel.playCorrectAnswerSound();
             }
             removeAll();
             revalidate();
@@ -908,6 +921,8 @@ public class Display extends JPanel {
                 timer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
+
+                SoundPanel.playLockSound();
             } else {
                 //       System.out.println("Cool they got it right");
                 timer.stop();
@@ -919,6 +934,8 @@ public class Display extends JPanel {
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+
+                SoundPanel.playCorrectAnswerSound();
             }
             removeAll();
             revalidate();

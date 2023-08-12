@@ -2,6 +2,8 @@ package controller;
 
 import model.Maze;
 
+import view.SoundPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -37,6 +39,9 @@ public class GUI {
                 frame.getContentPane().setLayout(null);
                 frame.setLocationRelativeTo(null);
                 frame.getContentPane().setBackground(Color.BLACK);
+
+                SoundPanel.playBackgroundMusic("Avengers Suite (Theme).wav");
+                SoundPanel.adjustVolume(10);
 
                 //playBackgroundMusic("Avengers Suite (Theme).wav");
             }
