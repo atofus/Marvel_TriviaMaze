@@ -73,11 +73,14 @@ public class Display extends JPanel {
     private boolean optionDVisibilityHint = true;
     private JLabel myFinishLabel;
 
+    private boolean setButtonsInvisible;
+
     public Display() {
         question = new Question();
         scoreVal = 0;
         nameVal = "";
         difficultyLevel = 1;
+        setButtonsInvisible = false;
 
         myMaze = Maze.getMyInstance();
         characterSelect();
@@ -252,6 +255,10 @@ public class Display extends JPanel {
         }
         add(myNorthDoor);
         add(myMoveNorth);
+
+        if (setButtonsInvisible) {
+            myNorthDoor.setVisible(false);
+        }
     }
 
     public void createWestDoor() {
@@ -281,6 +288,10 @@ public class Display extends JPanel {
         }
         add(myWestDoor);
         add(myMoveWest);
+
+        if (setButtonsInvisible) {
+            myWestDoor.setVisible(false);
+        }
     }
 
     public void createSouthDoor() {
@@ -311,6 +322,10 @@ public class Display extends JPanel {
         }
         add(mySouthDoor);
         add(myMoveSouth);
+
+        if (setButtonsInvisible) {
+            mySouthDoor.setVisible(false);
+        }
     }
 
     public void createEastDoor() {
@@ -341,6 +356,10 @@ public class Display extends JPanel {
         }
         add(myEastDoor);
         add(myMoveEast);
+
+        if (setButtonsInvisible) {
+            myEastDoor.setVisible(false);
+        }
     }
 
 
@@ -527,19 +546,19 @@ public class Display extends JPanel {
         JLabel countField = new JLabel();
         if (difficultyLevel == 1) {
             countDownSec[0] = 15;
-            countField.setText("Time: 15");
+            countField.setText("Time: 16");
             //scoreVal += 5;
         } else if (difficultyLevel == 2) {
             countDownSec[0] = 10;
-            countField.setText("Time: 10");
+            countField.setText("Time: 11");
             //scoreVal += 10;
         } else if (difficultyLevel == 3) {
             countDownSec[0] = 5;
-            countField.setText("Time: 5");
+            countField.setText("Time: 6");
             //scoreVal += 15;
         } else {
             countDownSec[0] = 10;
-            countField.setText("Time: 10");
+            countField.setText("Time: 11");
             //scoreVal += 5;
         }
 
@@ -557,12 +576,13 @@ public class Display extends JPanel {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                countDownSec[0]--;
+
                 countField.setText("Time: " + countDownSec[0]);
+                countDownSec[0]--;
 
                 System.out.println(countField.getText());
 
-                if (countDownSec[0] == 0) {
+                if (countDownSec[0] == -1) {
                     timer.stop();
                     System.out.println("Locked!");
 
@@ -588,6 +608,8 @@ public class Display extends JPanel {
                     }
 
                     repaint();
+
+                    timer = null;
                 }
             }
         });
@@ -796,6 +818,8 @@ public class Display extends JPanel {
             repaint();
 
             repeat();
+
+            timer = null;
         });
 
         optionB.addActionListener(e -> {
@@ -821,6 +845,10 @@ public class Display extends JPanel {
             repaint();
 
             repeat();
+
+            timer = null;
+
+
         });
 
         optionC.addActionListener(e -> {
@@ -846,6 +874,8 @@ public class Display extends JPanel {
             repaint();
 
             repeat();
+
+            timer = null;
         });
 
         optionD.addActionListener(e -> {
@@ -871,6 +901,8 @@ public class Display extends JPanel {
             repaint();
 
             repeat();
+
+            timer = null;
         });
 
 //        timer.stop();
@@ -917,6 +949,8 @@ public class Display extends JPanel {
         add(myFinishLabel);
 
 
+
+
         g.setColor(Color.LIGHT_GRAY);
         try {
             drawLock(g);
@@ -960,40 +994,21 @@ public class Display extends JPanel {
                 }
             }
         }
+
+
+
         drawRoomBox(g);
     }
 
-    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
+    public void addTime() {
+        countDownSec[0] += 6;
+    }
 
-        boolean setButtonsInvisible = false;
+    public Timer getTimer() {
+        return timer;
+    }
 
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.YELLOW);
-        g2d.drawRect(488, 104, 150, 150);
-
-
-        //TODO add in more logic to end game
-
-
-        if ((!myMaze.display(Direction.NORTH) || myMaze.getCurrentRoom().getDoor(Room.NORTH_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.WEST) || myMaze.getCurrentRoom().getDoor(Room.WEST_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.SOUTH) || myMaze.getCurrentRoom().getDoor(Room.SOUTH_INDEX).getForeverLocked())
-                && (!myMaze.display(Direction.EAST) || myMaze.getCurrentRoom().getDoor(Room.EAST_INDEX).getForeverLocked())) {
-            //JOptionPane.showMessageDialog(null, "You lose!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            //System.out.println("You lose!");
-
-            //String name = JOptionPane.showInputDialog("Almost there! What is your name?");
-            nameVal = JOptionPane.showInputDialog("Almost there! What is your name?");
-            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
-            JOptionPane.showMessageDialog(null, nameAndScore);
-
-            leaderboard();
-
-            setButtonsInvisible = true;
-
-            //exit(0);
-        }
-
+    public void checkEndGame() throws IOException, InterruptedException {
         if (myMaze.gameFinished()) {
             nameVal = JOptionPane.showInputDialog("You won! What is your name?");
             String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
@@ -1004,21 +1019,47 @@ public class Display extends JPanel {
             //exit(0);
         }
 
+        if (!myMaze.isPossible()) {
+            //timer.stop();
+            //drawLock(g);
+            nameVal = JOptionPane.showInputDialog("Game Over! What is your name?");
+            String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
+            JOptionPane.showMessageDialog(null, nameAndScore);
 
-        //add(scoreField);
+            setButtonsInvisible = true;
+
+            leaderboard();
 
 
-       // createDoorButtons();
+        }
+
+        //revalidate();
+        //repaint();
+    }
+
+    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
+
+//        boolean setButtonsInvisible = false;
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.YELLOW);
+        g2d.drawRect(488, 104, 150, 150);
+
+        //drawLock(g);
+        checkEndGame();
 
         if (setButtonsInvisible) {
             mySouthDoor.setVisible(false);
             myEastDoor.setVisible(false);
             myNorthDoor.setVisible(false);
             myWestDoor.setVisible(false);
+
             myMoveNorth.setVisible(false);
             myMoveSouth.setVisible(false);
             myMoveEast.setVisible(false);
             myMoveWest.setVisible(false);
+
+            myFinishLabel.setVisible(false);
         }
         drawQuestionArea(g);
     }
@@ -1090,10 +1131,31 @@ public class Display extends JPanel {
 
         //Thread.sleep(10000);
 
+//        revalidate();
+//        repaint();
+
+        writer.close();
+
+        //setButtonsInvisible = true;
+        revalidate();
+        repaint();
+
+
+
+//        mySouthDoor.setVisible(false);
+//        myEastDoor.setVisible(false);
+//        myNorthDoor.setVisible(false);
+//        myWestDoor.setVisible(false);
+//        myMoveNorth.setVisible(false);
+//        myMoveSouth.setVisible(false);
+//        myMoveEast.setVisible(false);
+//        myMoveWest.setVisible(false);
+
+        //removeAll();
 
 
         //JOptionPane.showMessageDialog(null, sb.toString());
-        writer.close();
+
 
 
 

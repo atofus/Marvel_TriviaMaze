@@ -38,6 +38,7 @@ public class TriviaMazeView extends JFrame {
 
     private JMenu myHintMenuItem;
     private JMenuItem myHint;
+    private JMenuItem myPotion;
 
     private Display panel;
     private Maze myMaze;
@@ -122,8 +123,18 @@ public class TriviaMazeView extends JFrame {
 
 
         myScore.addActionListener(e -> {
-            String nameAndScore = "Your current score is " + myMaze.getScore() + " points.";
-            JOptionPane.showMessageDialog(null, nameAndScore);
+
+            try {
+                panel.getTimer().stop();
+                String nameAndScore = "Your current score is " + myMaze.getScore() + " points.";
+                JOptionPane.showMessageDialog(null, nameAndScore);
+                panel.getTimer().start();
+            } catch (NullPointerException npe) {
+                String nameAndScore = "Your current score is " + myMaze.getScore() + " points.";
+                JOptionPane.showMessageDialog(null, nameAndScore);
+            }
+
+
         });
 
         myLeaderBoard.addActionListener(e -> {
@@ -136,15 +147,55 @@ public class TriviaMazeView extends JFrame {
 
         myHint.addActionListener(e -> {
             try {
+                panel.getTimer().stop();
                 panel.setHint(true);
 
                 panel.provideHint(panel.getQuestion());
 
                 panel.revalidate();
                 panel.repaint();
+                panel.getTimer().start();
             } catch (NullPointerException npe) {
                 JOptionPane.showMessageDialog(null, "Can't use a hint with no question.");
             }
+        });
+
+        myPotion.addActionListener(e -> {
+            //TODO please don't try to add potions until you get a question
+            // After one question, it gives you potions
+
+            //TODO fix timer
+
+            String havePotions = "You have " + myMaze.getPotions() + " potion(s).\nWould you like to use one and gain 5 seconds?";
+            String noPotions = "You have 0 potions.";
+
+            //System.out.println(myMaze.getNumPotions());
+
+            try {
+                panel.getTimer().stop();
+                if (myMaze.getPotions() > 0) {
+
+                    if (JOptionPane.showConfirmDialog(null, havePotions, "Potions!", JOptionPane.YES_NO_OPTION)
+                            == JOptionPane.YES_OPTION) {
+                        myMaze.setPotions(myMaze.getPotions() - 1);
+                        panel.addTime();
+                    }
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, noPotions);
+
+                }
+                panel.getTimer().start();
+            } catch (NullPointerException nullPointer) {
+                JOptionPane.showMessageDialog(null, "You have " + myMaze.getPotions() + " potion(s).");
+            }
+
+
+
+
+
+
         });
 
         myExit.addActionListener(e -> {
@@ -201,7 +252,15 @@ public class TriviaMazeView extends JFrame {
             //leader.put(inScore, inName);
         }
 
-        JOptionPane.showMessageDialog(null, sb.toString());
+        try {
+            panel.getTimer().stop();
+            JOptionPane.showMessageDialog(null, sb.toString());
+            panel.getTimer().start();
+        } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, sb.toString());
+        }
+
+
 
         scanner.close();
     }
@@ -235,7 +294,9 @@ public class TriviaMazeView extends JFrame {
 
         myHintMenuItem = new JMenu("Hint");
         myHint = new JMenuItem("Hint");
+        myPotion = new JMenuItem("Potion");
         myHintMenuItem.add(myHint);
+        myHintMenuItem.add(myPotion);
 
         //myHint = new JMenu("Hint");
 

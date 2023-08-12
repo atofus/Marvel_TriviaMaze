@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Random;
 
 public class Maze implements Serializable {
 
@@ -24,6 +25,8 @@ public class Maze implements Serializable {
     private boolean myGameStatus = true;
     private int myRoomNumber = 1;
     private int myScoreValue;
+
+    private int myPotions = 1;
 
 
     private final PropertyChangeSupport myPcs;
@@ -50,6 +53,21 @@ public class Maze implements Serializable {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         myPcs.addPropertyChangeListener(listener);
+    }
+
+    public void setPotions(final int thePotions) {
+        myPotions = thePotions;
+    }
+
+    public int getPotions() {
+        return myPotions;
+    }
+
+    public void gainPotions() {
+        int rand = new Random().nextInt(10);
+        if (rand == 1) {
+            myPotions++;
+        }
     }
 
     public void setScore(final int theScore) {
@@ -221,16 +239,61 @@ public class Maze implements Serializable {
 
     public boolean isPossible() {
 
-        return isPossible(4,4);
+        for (int x = 0; x < rows; ++x) {
+            for (int y = 0; y < columns; ++y) {
+                myMaze[x][y].setVisited(false);
+            }
+        }
+
+
+        return isPossibleHelper(myX, myY);
+
+
 
     }
 
-    private boolean isPossible (int goalX, int goalY) {
+    private boolean isPossibleHelper (int theX, int theY) {
+        if (!myMaze[theX][theY].getVisited()) {
 
+            myMaze[theX][theY].setVisited(true);
 
+            if (theX == 4 && theY == 4) {
+                return true;
+            }
 
+            if (myMaze[theX][theY].getDoor(Room.NORTH_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.NORTH_INDEX).getForeverLocked()) {
+                boolean northCheck = isPossibleHelper(theX, theY - 1);
+                if (northCheck) {
+                    return true;
+                }
+            }
 
-        return true;
+            if (myMaze[theX][theY].getDoor(Room.SOUTH_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.SOUTH_INDEX).getForeverLocked()) {
+                boolean southCheck = isPossibleHelper(theX, theY + 1);
+                if (southCheck) {
+                    return true;
+                }
+            }
+
+            if (myMaze[theX][theY].getDoor(Room.EAST_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.EAST_INDEX).getForeverLocked()) {
+                boolean eastCheck = isPossibleHelper(theX + 1, theY);
+                if (eastCheck) {
+                    return true;
+                }
+            }
+
+            if (myMaze[theX][theY].getDoor(Room.WEST_INDEX) != null
+                    && !myMaze[theX][theY].getDoor(Room.WEST_INDEX).getForeverLocked()) {
+                boolean westCheck = isPossibleHelper(theX - 1, theY);
+                if (westCheck) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public Room[][] getMaze() {
