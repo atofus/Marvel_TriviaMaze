@@ -819,6 +819,14 @@ public class Display extends JPanel {
 
             repeat();
 
+            try {
+                checkEndGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+
             timer = null;
         });
 
@@ -845,6 +853,14 @@ public class Display extends JPanel {
             repaint();
 
             repeat();
+
+            try {
+                checkEndGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
 
             timer = null;
 
@@ -875,6 +891,14 @@ public class Display extends JPanel {
 
             repeat();
 
+            try {
+                checkEndGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+
             timer = null;
         });
 
@@ -901,6 +925,14 @@ public class Display extends JPanel {
             repaint();
 
             repeat();
+
+            try {
+                checkEndGame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
 
             timer = null;
         });
@@ -1033,21 +1065,6 @@ public class Display extends JPanel {
 
         }
 
-        //revalidate();
-        //repaint();
-    }
-
-    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
-
-//        boolean setButtonsInvisible = false;
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.YELLOW);
-        g2d.drawRect(488, 104, 150, 150);
-
-        //drawLock(g);
-        checkEndGame();
-
         if (setButtonsInvisible) {
             mySouthDoor.setVisible(false);
             myEastDoor.setVisible(false);
@@ -1060,7 +1077,37 @@ public class Display extends JPanel {
             myMoveWest.setVisible(false);
 
             myFinishLabel.setVisible(false);
+            myJTextRoom.setVisible(false);
         }
+
+        //revalidate();
+        //repaint();
+    }
+
+    void drawRoomBox(Graphics g) throws IOException, InterruptedException {
+
+//        boolean setButtonsInvisible = false;
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.YELLOW);
+        g2d.drawRect(488, 104, 150, 150);
+
+        //TODO FIX MEEEEEEEE
+        //checkEndGame();
+
+//        if (setButtonsInvisible) {
+//            mySouthDoor.setVisible(false);
+//            myEastDoor.setVisible(false);
+//            myNorthDoor.setVisible(false);
+//            myWestDoor.setVisible(false);
+//
+//            myMoveNorth.setVisible(false);
+//            myMoveSouth.setVisible(false);
+//            myMoveEast.setVisible(false);
+//            myMoveWest.setVisible(false);
+//
+//            myFinishLabel.setVisible(false);
+//        }
         drawQuestionArea(g);
     }
 
