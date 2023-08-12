@@ -21,7 +21,7 @@ public class SoundPanel {
             backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
 
             FloatControl gainControl = (FloatControl) backgroundMusic.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-75.0f);
+            //gainControl.setValue(-75.0f);
 
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
@@ -31,7 +31,8 @@ public class SoundPanel {
     public static void adjustVolume(float volume) {
         if (backgroundMusic != null && backgroundMusic.isOpen()) {
             FloatControl gainControl = (FloatControl) backgroundMusic.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(-20.0f * (float) Math.log10(volume));
+            //gainControl.setValue(-20.0f * (float) Math.log10(volume));
+            gainControl.setValue(-20.0f * volume);
         }
     }
 
