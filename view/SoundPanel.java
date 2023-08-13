@@ -44,6 +44,14 @@ public class SoundPanel {
         playSound("LockSound.wav");
     }
 
+    public static void playWinSound() {
+        playSound("Winner.wav");
+    }
+
+    public static void playLoseSound() {
+        playSound("Loser.wav");
+    }
+
     private static void playSound(String filePath) {
         try {
             File audioFile = new File(filePath);

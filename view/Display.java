@@ -1059,10 +1059,13 @@ public class Display extends JPanel {
 
     public void checkEndGame() throws IOException, InterruptedException {
         if (myMaze.gameFinished()) {
+            SoundPanel.playWinSound();
+
             nameVal = JOptionPane.showInputDialog("You won! What is your name?");
             String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
             JOptionPane.showMessageDialog(null, nameAndScore);
             setButtonsInvisible = true;
+
 
             leaderboard();
             //exit(0);
@@ -1071,11 +1074,14 @@ public class Display extends JPanel {
         if (!myMaze.isPossible()) {
             //timer.stop();
             //drawLock(g);
+            SoundPanel.playLoseSound();
             nameVal = JOptionPane.showInputDialog("Game Over! What is your name?");
             String nameAndScore = "Congratulations " + nameVal + " you scored " + myMaze.getScore() + " points.";
             JOptionPane.showMessageDialog(null, nameAndScore);
 
             setButtonsInvisible = true;
+
+
 
             leaderboard();
 

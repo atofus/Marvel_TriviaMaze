@@ -40,10 +40,8 @@ public class GUI {
                 frame.setLocationRelativeTo(null);
                 frame.getContentPane().setBackground(Color.BLACK);
 
-                SoundPanel.playBackgroundMusic("Avengers Suite (Theme).wav");
-                //SoundPanel.adjustVolume(3);
+                //SoundPanel.playBackgroundMusic("Avengers Suite (Theme).wav");
 
-                //playBackgroundMusic("Avengers Suite (Theme).wav");
             }
         });
     }
