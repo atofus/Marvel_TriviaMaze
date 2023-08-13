@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import model.Room;
 import model.Maze;
-import model.Player;
 
 public class MapPanel extends JPanel {
 
