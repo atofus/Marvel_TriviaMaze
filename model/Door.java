@@ -31,7 +31,7 @@ public class Door implements Serializable {
 //        myQuestion = new Question("What is Spiderman real name?", "Frank Clark",
 //                "Stevie Wonder", "Steve Rogers", "Peter Parker", "Peter Parker");
 
-        myQuestion = dbq.getRandomQuestion(Display.charName);
+        myQuestion = dbq.getRandomQuestion("Spiderman");
         //System.out.println(myQuestion.getQuestion());
     }
 

@@ -10,6 +10,9 @@ public class SoundPanel {
     public static Clip correctAnswerSound;
     public static Clip lockSound;
 
+    private static Clip soundClip;
+
+
     public static void playBackgroundMusic(String filePath) {
         try {
             File audioFile = new File(filePath);
@@ -58,11 +61,22 @@ public class SoundPanel {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioStream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
-            Clip soundClip = (Clip) AudioSystem.getLine(info); // Store the Clip instance
+            soundClip = (Clip) AudioSystem.getLine(info); // Store the Clip instance
             soundClip.open(audioStream);
             soundClip.start(); // Play the sound once
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void stopMusic() {
+        soundClip.stop();
+    }
+
+    public static void stopBackgroundMusic() {
+        if (backgroundMusic != null && backgroundMusic.isRunning()) {
+            backgroundMusic.stop();
+        }
+    }
+
 }

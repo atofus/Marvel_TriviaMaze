@@ -30,9 +30,6 @@ public class GUI {
                 frame.setTitle("Trivia Maze");
 
                 frame.setBounds(0, 0, 900, 900);
-                // frame.setBackground(Color.GRAY);
-
-
                 frame.setResizable(false);
                 frame.setVisible(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,7 +37,7 @@ public class GUI {
                 frame.setLocationRelativeTo(null);
                 frame.getContentPane().setBackground(Color.BLACK);
 
-                //SoundPanel.playBackgroundMusic("Avengers Suite (Theme).wav");
+                SoundPanel.playBackgroundMusic("Avengers Suite (Theme).wav");
 
             }
         });
