@@ -76,25 +76,60 @@ public class Display extends JPanel {
 
     private boolean setButtonsInvisible;
 
+    //TODO fix me
+    public JTextArea scoreTextField;
+
     public Display() {
         question = new Question();
         scoreVal = 0;
         nameVal = "";
         difficultyLevel = 1;
         setButtonsInvisible = false;
+        scoreTextField = new JTextArea();
 
         myMaze = Maze.getMyInstance();
+
+        //removeLocks();
+
         characterSelect();
         getDiffLevel();
+
+        //setBackup();
+
 
         createNorthDoor();
         createEastDoor();
         createWestDoor();
         createSouthDoor();
         addListeners();
+
+
+    }
+
+    public void setButtonInvis(final boolean theButtonInvis) {
+        setButtonsInvisible = theButtonInvis;
+    }
+
+    public void setBackup() {
+        if (myMaze.getCharName().equals("Black Widow")) {
+            serialize("backup/blackwidow.ser");
+        }
+        if (myMaze.getCharName().equals("Captain America")) {
+            serialize("backup/capamerica.ser");
+        }
+        if (myMaze.getCharName().equals("Loki")) {
+            serialize("backup/loki.ser");
+        }
+        if (myMaze.getCharName().equals("Spiderman")) {
+            serialize("backup/spiderman.ser");
+        }
+
     }
 
     public void characterSelect() {
+
+        myMaze = Maze.getMyInstance();
+
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMessage("Pick a character, any character.");
         optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
@@ -130,12 +165,18 @@ public class Display extends JPanel {
         });
 
 
+
+
         optionPane.setOptions(new Object[] {bwButton, caButton, lokiButton, sButton});
         JDialog dialog = optionPane.createDialog(this, "Character");
         dialog.setVisible(true);
 
+        //System.out.println("CharName: " + charName);
+
         myMaze.setCharName(charName);
         myMaze.setCharImage(charImage);
+
+        //System.out.println(myMaze.getCharName());
     }
 
     public void getDiffLevel() {
@@ -151,15 +192,41 @@ public class Display extends JPanel {
         if (difficultyLevel == 1) {
           //  scoreVal += 5;
             myMaze.setScore(myMaze.getScore() + 5);
+            //removeLocks();
         } else if (difficultyLevel == 2) {
             //scoreVal += 10;
             myMaze.setScore(myMaze.getScore() + 10);
+            //removeLocks();
             randomLocks();
         } else if (difficultyLevel == 3) {
+            //removeLocks();
             randomLocks();
             //scoreVal += 15;
             myMaze.setScore(myMaze.getScore() + 15);
         }
+        myMaze.setDiffLevel(difficultyLevel);
+        //repeat();
+    }
+
+    public void removeLocks() {
+
+        for (int i = 0; i < 5; ++i) {
+            for (int j = 0; j < 5; ++j) {
+                if (myMaze.getRoom(i, j).getDoor(Room.NORTH_INDEX) != null) {
+                    myMaze.getRoom(i, j).getDoor(Room.NORTH_INDEX).setForeverLocked(false);
+                }
+                if (myMaze.getRoom(i, j).getDoor(Room.SOUTH_INDEX) != null) {
+                    myMaze.getRoom(i, j).getDoor(Room.SOUTH_INDEX).setForeverLocked(false);
+                }
+                if (myMaze.getRoom(i, j).getDoor(Room.EAST_INDEX) != null) {
+                    myMaze.getRoom(i, j).getDoor(Room.EAST_INDEX).setForeverLocked(false);
+                }
+                if (myMaze.getRoom(i, j).getDoor(Room.WEST_INDEX) != null) {
+                    myMaze.getRoom(i, j).getDoor(Room.WEST_INDEX).setForeverLocked(false);
+                }
+            }
+        }
+
     }
 
     public void randomLocks() {
@@ -187,6 +254,7 @@ public class Display extends JPanel {
         Icon icon = (Icon)charIcon;
         return icon;
     }
+
 
     public void serialize(String filename) {
         try {
@@ -257,9 +325,9 @@ public class Display extends JPanel {
         add(myNorthDoor);
         add(myMoveNorth);
 
-        if (setButtonsInvisible) {
-            myNorthDoor.setVisible(false);
-        }
+//        if (setButtonsInvisible) {
+//            myNorthDoor.setVisible(false);
+//        }
     }
 
     public void createWestDoor() {
@@ -290,9 +358,9 @@ public class Display extends JPanel {
         add(myWestDoor);
         add(myMoveWest);
 
-        if (setButtonsInvisible) {
-            myWestDoor.setVisible(false);
-        }
+//        if (setButtonsInvisible) {
+//            myWestDoor.setVisible(false);
+//        }
     }
 
     public void createSouthDoor() {
@@ -324,9 +392,9 @@ public class Display extends JPanel {
         add(mySouthDoor);
         add(myMoveSouth);
 
-        if (setButtonsInvisible) {
-            mySouthDoor.setVisible(false);
-        }
+//        if (setButtonsInvisible) {
+//            mySouthDoor.setVisible(false);
+//        }
     }
 
     public void createEastDoor() {
@@ -358,9 +426,9 @@ public class Display extends JPanel {
         add(myEastDoor);
         add(myMoveEast);
 
-        if (setButtonsInvisible) {
-            myEastDoor.setVisible(false);
-        }
+//        if (setButtonsInvisible) {
+//            myEastDoor.setVisible(false);
+//        }
     }
 
 
@@ -545,15 +613,15 @@ public class Display extends JPanel {
 
     public void createTimer(int indexDir) {
         JLabel countField = new JLabel();
-        if (difficultyLevel == 1) {
+        if (myMaze.getDiffLevel() == 1) {
             countDownSec[0] = 15;
             countField.setText("Time: 16");
             //scoreVal += 5;
-        } else if (difficultyLevel == 2) {
+        } else if (myMaze.getDiffLevel() == 2) {
             countDownSec[0] = 10;
             countField.setText("Time: 11");
             //scoreVal += 10;
-        } else if (difficultyLevel == 3) {
+        } else if (myMaze.getDiffLevel() == 3) {
             countDownSec[0] = 5;
             countField.setText("Time: 6");
             //scoreVal += 15;
@@ -811,6 +879,8 @@ public class Display extends JPanel {
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
 
+                myMaze.gainPotions();
+
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
@@ -849,6 +919,8 @@ public class Display extends JPanel {
               //  scoreVal += countDownSec[0];
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
+
+                myMaze.gainPotions();
 
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
@@ -890,6 +962,8 @@ public class Display extends JPanel {
                 //scoreVal += countDownSec[0];
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
+
+                myMaze.gainPotions();
 
                 theDoor.setForeverLocked(false);
                 myMaze.unlockingDoors(theDir);
@@ -934,6 +1008,8 @@ public class Display extends JPanel {
                 myMaze.unlockingDoors(theDir);
                 theDoor.unlock();
                 myMaze.movePlayer(theDir);
+
+                myMaze.gainPotions();
 
                 SoundPanel.playCorrectAnswerSound();
             }
@@ -1066,6 +1142,7 @@ public class Display extends JPanel {
             JOptionPane.showMessageDialog(null, nameAndScore);
             setButtonsInvisible = true;
 
+            TriviaMazeView.turnOffSave();
 
             leaderboard();
             //exit(0);
@@ -1189,13 +1266,39 @@ public class Display extends JPanel {
             numLeaders++;
         }
 
-        JTextArea scoreTextField = new JTextArea(sb.toString());
+        //scoreTextField = new JTextArea(sb.toString());
+        scoreTextField.setText(sb.toString());
+        scoreTextField.setVisible(true);
         scoreTextField.setBounds(0,0, 800, 800);
         //scoreTextField.setHorizontalAlignment(JTextField.CENTER);
         scoreTextField.setFont(new Font("Geneva", Font.BOLD, 40));
         scoreTextField.setBackground(Color.BLACK);
         scoreTextField.setForeground(Color.YELLOW);
         add(scoreTextField);
+
+//        final int[] showTime = {5};
+//        Timer time = new Timer(1000, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                --showTime[0];
+//                System.out.println("Time: " + showTime[0]);
+//
+//                if (showTime[0] == 0) {
+//                    remove(scoreTextField);
+//                    scoreTextField.setVisible(false);
+//                    revalidate();
+//                    repaint();
+//                    //time = null;
+//                    //time.stop();
+//                }
+//            }
+//        });
+
+        //time.start();
+        //wait(10000);
+
+
+        //scoreTextField.setVisible(false);
 
         //scoreTextField.wait(10000);
 
@@ -1231,6 +1334,16 @@ public class Display extends JPanel {
 
     }
 
+
+    public void removeScoreTextField() {
+        remove(scoreTextField);
+        scoreTextField.setVisible(false);
+        //removeAll();
+        revalidate();
+        repaint();
+        //scoreTextField.setVisible(false);
+        //System.out.println("Is this getting called?");
+    }
 
 
 
@@ -1274,7 +1387,8 @@ public class Display extends JPanel {
      * Helper method that turns off all the button doors.
      * Used to eliminate redundancy in code.
      */
-    private void turnDoorButtonsOFF() {
+    //TODO fix me
+    public void turnDoorButtonsOFF() {
         myEastDoor.setEnabled(false);
         myEastDoor.setBackground(Color.GRAY);
         myEastDoor.setOpaque(true);
@@ -1296,13 +1410,18 @@ public class Display extends JPanel {
      * Helper method that goes at looks at each door with new data
      * and its listeners. Used to eliminate redundancy in code.
      */
-    private void repeat() {
+    //TODO fix me
+    public void repeat() {
         createNorthDoor();
         createEastDoor();
         createWestDoor();
         createSouthDoor();
         addListeners();
+
+        revalidate();
+        repaint();
     }
+
 
 
 }

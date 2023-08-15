@@ -1,5 +1,6 @@
 package view;
 
+import controller.GUI;
 import extraFiles.MapPanel;
 import extraFiles.RoomPanel;
 import model.Maze;
@@ -24,8 +25,10 @@ public class TriviaMazeView extends JFrame {
 
     private JMenuBar myJMenuBar;
     private JMenu myFile;
-    private JMenuItem mySave;
-    private JMenuItem myLoad;
+    private static JMenuItem mySave;
+    private static JMenuItem myLoad;
+
+    private JMenuItem myNewGame;
     private JMenuItem myExit;
     private JMenu myHelp;
     private JMenuItem myAbout;
@@ -77,6 +80,10 @@ public class TriviaMazeView extends JFrame {
         // frame.add(playingField);
     }
 
+    public static void turnOffSave() {
+        mySave.setVisible(false);
+    }
+
     public void actionListeners() {
         mySave.addActionListener(e -> {
 
@@ -99,6 +106,17 @@ public class TriviaMazeView extends JFrame {
         });
 
         myLoad.addActionListener(e -> {
+
+            try {
+                SoundPanel.stopMusic();
+            } catch (NullPointerException npe) {
+
+            }
+
+
+            mySave.setVisible(true);
+
+
             String filename = "";
             String[] options = {"Game 1", "Game 2", "Game 3"};
             int choice = JOptionPane.showOptionDialog(null,
@@ -119,6 +137,91 @@ public class TriviaMazeView extends JFrame {
             } catch (RuntimeException re) {
                 JOptionPane.showMessageDialog(null, "You can't load an empty game.");
             }
+        });
+
+
+
+        myNewGame.addActionListener(e -> {
+
+            //TODO don't forget
+            //myMaze = Maze.getMyInstance();
+            //at the beginning of charSelect
+
+            try {
+                SoundPanel.stopMusic();
+            } catch (NullPointerException npe) {
+
+            }
+
+            if (JOptionPane.showConfirmDialog(null, "Would you like to start a new game?",
+                    "New Game!", JOptionPane.YES_NO_OPTION)
+                    == JOptionPane.YES_OPTION) {
+
+                //panel = new Display();
+
+                //myMaze = null;
+                //myMaze = Maze.getMyInstance();
+
+                //myMaze = Maze.getMyInstance();
+
+//                getContentPane().revalidate();
+//                getContentPane().repaint();
+
+                myMaze = Maze.getMyInstance();
+
+                panel.setButtonInvis(false);
+
+                panel.characterSelect();
+                panel.getDiffLevel();
+
+
+
+                //getContentPane().revalidate();
+                //getContentPane().repaint();
+
+                //System.out.println(myMaze.getCharName());
+
+                //panel.removeLocks();
+
+                //myMaze.setX(0);
+                //myMaze.setY(0);
+                //panel.characterSelect();
+                //panel.getDiffLevel();
+
+                if (myMaze.getCharName().equals("Black Widow")) {
+                    //System.out.println("Black Widow");
+                    panel.deserialize("backup/blackwidow.ser");
+                } else if (myMaze.getCharName().equals("Captain America")) {
+                    //System.out.println("Cap America");
+                    panel.deserialize("backup/capamerica.ser");
+                } else if (myMaze.getCharName().equals("Loki")) {
+                    //System.out.println("Loki");
+                    panel.deserialize("backup/loki.ser");
+                } else if (myMaze.getCharName().equals("Spiderman")) {
+                    //System.out.println("Spiderman");
+                    panel.deserialize("backup/spiderman.ser");
+                }
+
+                //panel.removeLocks();
+
+                if (myMaze.getDiffLevel() == 2 || myMaze.getDiffLevel() == 3) {
+                    panel.randomLocks();
+                }
+
+                //panel.createNorthDoor();
+
+                //panel.repeat();
+
+                //getContentPane().removeAll();
+                getContentPane().revalidate();
+                getContentPane().repaint();
+
+
+
+
+            }
+
+
         });
 
 
@@ -275,9 +378,12 @@ public class TriviaMazeView extends JFrame {
         mySave = new JMenuItem("Save");
         myLoad = new JMenuItem("Load");
         myExit = new JMenuItem("Exit");
+        myNewGame = new JMenuItem("New Game");
+        myFile.add(myNewGame);
         myFile.add(mySave);
         myFile.add(myLoad);
         myFile.add(myExit);
+
         myHelp = new JMenu("Help");
         myAbout = new JMenuItem("About");
         myHelp.add(myAbout);

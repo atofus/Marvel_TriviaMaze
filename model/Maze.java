@@ -28,10 +28,14 @@ public class Maze implements Serializable {
 
     private int myPotions = 1;
 
+    private int myDiffLevel = 0;
+
 
     private final PropertyChangeSupport myPcs;
     //private List<PropertyChangeListener> myListeners;
     private static Maze myInstance = new Maze();
+
+
 
 
     public static Maze getMyInstance() {
@@ -43,12 +47,27 @@ public class Maze implements Serializable {
         startGame();
     }
 
+    public int getRoomNumber() {
+        return myRoomNumber;
+    }
+    public int getDiffLevel() {
+        return myDiffLevel;
+    }
+
+    public void setDiffLevel(final int theDiffLevel) {
+        myDiffLevel = theDiffLevel;
+    }
+
     public void startGame() {
         myGameStatus = true;
         setScore(0);
         setX(0);
         setY(0);
         roomSetup();
+    }
+
+    public boolean getGameStatus() {
+        return myGameStatus;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -220,7 +239,7 @@ public class Maze implements Serializable {
 
         if (myDir == Direction.SOUTH && myMaze[myX][myY].getDoor(Room.SOUTH_INDEX) != null && !myMaze[myX][myY].getDoor(Room.SOUTH_INDEX).getLock()) {
             setLocation(myX, myY + 1);
-            //System.out.println("SOUTH getting called?");
+            System.out.println("SOUTH getting called?");
         }
 
         if (myDir == Direction.WEST && myMaze[myX][myY].getDoor(Room.WEST_INDEX) != null && !myMaze[myX][myY].getDoor(Room.WEST_INDEX).getLock()) {
