@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-112 Aimee
-46 Aimee
-45 Aimee
-38 f
-15 Aimee
-10 Alan
-5 Aimee
-=======
 83 L
+38 test
 20 L
 19 L
+18 test2
 15 A
-5 L
->>>>>>> 94eb22bf9a7778a97606b6689da8a147394a7c66
+5 A
