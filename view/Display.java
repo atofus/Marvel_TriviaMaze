@@ -1267,6 +1267,7 @@ public class Display extends JPanel {
         }
 
         //scoreTextField = new JTextArea(sb.toString());
+        scoreTextField.setEditable(false);
         scoreTextField.setText(sb.toString());
         scoreTextField.setVisible(true);
         scoreTextField.setBounds(0,0, 800, 800);
