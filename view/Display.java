@@ -46,7 +46,7 @@ public class Display extends JPanel {
     private JLabel answer_labelD;
     private JLabel myJTextRoom;
 
-    private int myQuestionNumber = 1;
+    //private int myQuestionNumber = 1;
 
     //TODO fix meeeeee!!!!!
     public static String charName;
@@ -205,7 +205,7 @@ public class Display extends JPanel {
             myMaze.setScore(myMaze.getScore() + 15);
         }
         myMaze.setDiffLevel(difficultyLevel);
-        //repeat();
+        myMaze.setQuestionNumber(1);
     }
 
     public void removeLocks() {
@@ -759,7 +759,7 @@ public class Display extends JPanel {
         myJTextArea.setFont(new Font("Comic Sans MS",Font.BOLD,25));
         myJTextArea.setBorder(BorderFactory.createBevelBorder(1));
         myJTextArea.setEditable(false);
-        myJTextArea.setText("Question " + myQuestionNumber);
+        myJTextArea.setText("Question " + myMaze.getQuestionNumber());
 
         //optionA.setBounds(90,540,40,40);
         optionA.setBounds(0, 120, 44, 40);
@@ -842,7 +842,7 @@ public class Display extends JPanel {
 
 
         addListenersOptions(theDir);
-        myQuestionNumber++;
+        myMaze.setQuestionNumber(myMaze.getQuestionNumber() + 1);
 
         //timer.stop();
     }

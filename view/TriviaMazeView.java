@@ -102,20 +102,20 @@ public class TriviaMazeView extends JFrame {
                 filename = "saveGame3.ser";
             }
 
-            panel.serialize(filename);
+            try {
+                panel.serialize(filename);
+            } catch (RuntimeException re) {
+                JOptionPane.showMessageDialog(null, "Make sure you save this game somewhere.");
+            }
         });
 
         myLoad.addActionListener(e -> {
-
             try {
                 SoundPanel.stopMusic();
             } catch (NullPointerException npe) {
 
             }
-
-
             mySave.setVisible(true);
-
 
             String filename = "";
             String[] options = {"Game 1", "Game 2", "Game 3"};
@@ -158,17 +158,6 @@ public class TriviaMazeView extends JFrame {
                     == JOptionPane.YES_OPTION) {
 
                 mySave.setVisible(true);
-                //panel = new Display();
-
-                //myMaze = null;
-                //myMaze = Maze.getMyInstance();
-
-                //myMaze = Maze.getMyInstance();
-
-//                getContentPane().revalidate();
-//                getContentPane().repaint();
-
-                myMaze = Maze.getMyInstance();
 
                 panel.setButtonInvis(false);
 
@@ -209,11 +198,6 @@ public class TriviaMazeView extends JFrame {
                     panel.randomLocks();
                 }
 
-                //panel.createNorthDoor();
-
-                //panel.repeat();
-
-                //getContentPane().removeAll();
                 getContentPane().revalidate();
                 getContentPane().repaint();
 

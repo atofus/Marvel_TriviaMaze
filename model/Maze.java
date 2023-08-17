@@ -29,6 +29,7 @@ public class Maze implements Serializable {
     private int myPotions = 1;
 
     private int myDiffLevel = 0;
+    private int myQuestionNumber;
 
 
     private final PropertyChangeSupport myPcs;
@@ -60,6 +61,7 @@ public class Maze implements Serializable {
 
     public void startGame() {
         myGameStatus = true;
+        setQuestionNumber(1);
         setScore(0);
         setX(0);
         setY(0);
@@ -366,6 +368,14 @@ public class Maze implements Serializable {
 
     public String getCharImage() {
         return myCharImage;
+    }
+
+    public void setQuestionNumber(final int theQuestionNumber) {
+        myQuestionNumber = theQuestionNumber;
+    }
+
+    public int getQuestionNumber() {
+        return myQuestionNumber;
     }
 
 
