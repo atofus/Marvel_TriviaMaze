@@ -1,7 +1,12 @@
 package view;
 
 //import extraFiles.SoundPanel;
-import model.*;
+import model.DBQuestions;
+import model.Direction;
+import model.Door;
+import model.Maze;
+import model.Question;
+import model.Room;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -49,36 +54,60 @@ public class Display extends JPanel {
     //private int myQuestionNumber = 1;
 
     //TODO fix meeeeee!!!!!
-    public static String charName;
+    /**
+     * Character selection related fields
+     */
+    public static String myCharName;
 
-    private String charImage;
-
-    private Timer timer;
-
+    private String myCharImage;
+    /**
+     * Timer for game events.
+     */
+    private Timer myTimer;
+    /**
+     * Player's score.
+     */
     private int scoreVal;
+    /**
+     * Player's name.
+     */
     private String nameVal;
-
+    /**
+     * Countdown seconds.
+     */
     private final int[] countDownSec = {10};
     private JTextField scoreField;
-
+    /**
+     * Difficulty level
+     */
     private int difficultyLevel;
-
+    /**
+     * Hint availability
+     */
     boolean hint = false;
+    /**
+     * Question related fields
+     */
     private Question question;
     private DBQuestions myDBQ = new DBQuestions();
     private boolean newQuestion = true;
-
     private boolean optionAVisibilityHint = true;
     private boolean optionBVisibilityHint = true;
     private boolean optionCVisibilityHint = true;
     private boolean optionDVisibilityHint = true;
     private JLabel myFinishLabel;
 
+    /**
+     * Data to see if we should turn GUI buttons invisible.
+     */
     private boolean setButtonsInvisible;
 
     //TODO fix me
     public JTextArea scoreTextField;
 
+    /**
+     * Constructor for the Display class. Initializes the GUI components and sets up the game.
+     */
     public Display() {
         question = new Question();
         scoreVal = 0;
@@ -96,15 +125,13 @@ public class Display extends JPanel {
 
         //setBackup();
 
-
         createNorthDoor();
         createEastDoor();
         createWestDoor();
         createSouthDoor();
         addListeners();
-
-
     }
+
 
     public void setButtonInvis(final boolean theButtonInvis) {
         setButtonsInvisible = theButtonInvis;
@@ -126,6 +153,9 @@ public class Display extends JPanel {
 
     }
 
+    /**
+     * Allows the player to select a character.
+     */
     public void characterSelect() {
 
         myMaze = Maze.getMyInstance();
@@ -141,26 +171,26 @@ public class Display extends JPanel {
 
 
         bwButton.addActionListener(e -> {
-            charName = "Black Widow";
-            charImage = "images/blackwidow.png";
+            myCharName = "Black Widow";
+            myCharImage = "images/blackwidow.png";
             optionPane.setValue(bwButton.getText());
         });
 
         caButton.addActionListener(e -> {
-            charName = "Captain America";
-            charImage = "images/captainamerica.png";
+            myCharName = "Captain America";
+            myCharImage = "images/captainamerica.png";
             optionPane.setValue(caButton.getText());
         });
 
         lokiButton.addActionListener(e -> {
-            charName = "Loki";
-            charImage = "images/loki.png";
+            myCharName = "Loki";
+            myCharImage = "images/loki.png";
             optionPane.setValue(lokiButton.getText());
         });
 
         sButton.addActionListener(e -> {
-            charName = "Spiderman";
-            charImage = "images/spiderman.png";
+            myCharName = "Spiderman";
+            myCharImage = "images/spiderman.png";
             optionPane.setValue(sButton.getText());
         });
 
@@ -173,12 +203,15 @@ public class Display extends JPanel {
 
         //System.out.println("CharName: " + charName);
 
-        myMaze.setCharName(charName);
-        myMaze.setCharImage(charImage);
+        myMaze.setCharName(myCharName);
+        myMaze.setCharImage(myCharImage);
 
         //System.out.println(myMaze.getCharName());
     }
 
+    /**
+     * Prompts the player to select the game's difficulty level.
+     */
     public void getDiffLevel() {
 
         String[] options = {"Easy", "Medium", "Hard"};
@@ -229,6 +262,9 @@ public class Display extends JPanel {
 
     }
 
+    /**
+     * Locks certain doors in the maze randomly to increase game difficulty.
+     */
     public void randomLocks() {
         myMaze.getRoom(1, 1).getDoor(Room.SOUTH_INDEX).setForeverLocked(true);
         myMaze.getRoom(1, 2).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
@@ -246,6 +282,12 @@ public class Display extends JPanel {
         myMaze.getRoom(3, 1).getDoor(Room.NORTH_INDEX).setForeverLocked(true);
     }
 
+    /**
+     * Resizes an image icon to a specified size.
+     *
+     * @param pictureName The name of the image file.
+     * @return The resized image icon.
+     */
     public Icon getImageResized(String pictureName) {
         ImageIcon charIcon = new ImageIcon(pictureName);
         Image image = charIcon.getImage();
@@ -255,7 +297,11 @@ public class Display extends JPanel {
         return icon;
     }
 
-
+    /**
+     * Serializes the Maze object and saves it to a file.
+     *
+     * @param filename The name of the file to save the serialized data to.
+     */
     public void serialize(String filename) {
         try {
             FileOutputStream fos = new FileOutputStream(filename);
@@ -270,7 +316,13 @@ public class Display extends JPanel {
         }
     }
 
+    /**
+     * Deserializes the Maze object from a file and updates the display accordingly.
+     *
+     * @param filename The name of the file to deserialize data from.
+     */
     public void deserialize(String filename) {
+        setButtonsInvisible = false;
         try {
             FileInputStream fis = new FileInputStream(filename);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -294,6 +346,9 @@ public class Display extends JPanel {
         repeat();
     }
 
+    /**
+     * Creates the GUI components for the North door.
+     */
     public void createNorthDoor() {
         doorIcon = new ImageIcon("images/door.png");
 
@@ -330,6 +385,9 @@ public class Display extends JPanel {
 //        }
     }
 
+    /**
+     * Creates the GUI components for the West door.
+     */
     public void createWestDoor() {
         doorIcon = new ImageIcon("images/door.png");
         //scaling image down.
@@ -363,6 +421,9 @@ public class Display extends JPanel {
 //        }
     }
 
+    /**
+     * Creates the GUI components for the South door.
+     */
     public void createSouthDoor() {
         doorIcon = new ImageIcon("images/door.png");
 
@@ -397,6 +458,9 @@ public class Display extends JPanel {
 //        }
     }
 
+    /**
+     * Creates the GUI components for the East door.
+     */
     public void createEastDoor() {
         doorIcon = new ImageIcon("images/door.png");
 
@@ -431,11 +495,20 @@ public class Display extends JPanel {
 //        }
     }
 
-
+    /**
+     * Retrieves the current Question object.
+     *
+     * @return The current Question object.
+     */
     public Question getQuestion() {
         return question;
     }
 
+    /**
+     * Provides a hint for the current question.
+     *
+     * @param theQuest The current Question object.
+     */
     public void provideHint(final Question theQuest) {
 
         ArrayList<JLabel> incorrectOptions = new ArrayList<>();
@@ -490,6 +563,9 @@ public class Display extends JPanel {
         repaint();
     }
 
+    /**
+     * Adds action listeners to the door buttons.
+     */
     public void addListeners() {
         myNorthDoor.addActionListener(e -> {
             createTimer(Room.NORTH_INDEX);
@@ -504,7 +580,7 @@ public class Display extends JPanel {
 
                 repeat();
             } else {
-                timer.start();
+                myTimer.start();
                 turnDoorButtonsOFF();
                 createQuestionLayout(Direction.NORTH);
                 revalidate();
@@ -524,7 +600,7 @@ public class Display extends JPanel {
 
                 repeat();
             } else {
-                timer.start();
+                myTimer.start();
                 turnDoorButtonsOFF();
                 createQuestionLayout(Direction.EAST);
 
@@ -561,11 +637,8 @@ public class Display extends JPanel {
 
                 repeat();
             } else {
-
-                timer.start();
-
+                myTimer.start();
                 turnDoorButtonsOFF();
-
                 createQuestionLayout(Direction.SOUTH);
 
                 //timer.stop();
@@ -591,7 +664,7 @@ public class Display extends JPanel {
 
                 repeat();
             } else {
-                timer.start();
+                myTimer.start();
 
                 turnDoorButtonsOFF();
 
@@ -607,10 +680,20 @@ public class Display extends JPanel {
 
     }
 
+    /**
+     * Sets whether the hint is enabled or not.
+     *
+     * @param theHint true if the hint is enabled, false otherwise.
+     */
     public void setHint(boolean theHint) {
         hint = theHint;
     }
 
+    /**
+     * Creates a timer for the countdown when facing a locked door.
+     *
+     * @param indexDir The index direction of the door (Room.NORTH_INDEX, Room.EAST_INDEX, etc.).
+     */
     public void createTimer(int indexDir) {
         JLabel countField = new JLabel();
         if (myMaze.getDiffLevel() == 1) {
@@ -642,7 +725,7 @@ public class Display extends JPanel {
 
         //System.out.println(scoreField.getText());
 
-        timer = new Timer(1000, new ActionListener() {
+        myTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -652,7 +735,7 @@ public class Display extends JPanel {
                 System.out.println(countField.getText());
 
                 if (countDownSec[0] == -1) {
-                    timer.stop();
+                    myTimer.stop();
                     System.out.println("Locked!");
 
                     Door theDoor = myMaze.getCurrentRoom().getDoor(indexDir);
@@ -678,13 +761,17 @@ public class Display extends JPanel {
 
                     repaint();
 
-                    timer = null;
+                    myTimer = null;
                 }
             }
         });
     }
 
-
+    /**
+     * Creates the layout for displaying the question panel when facing a locked door.
+     *
+     * @param theDir The direction of the locked door (Direction.NORTH, Direction.EAST, etc.).
+     */
     public void createQuestionLayout(final Direction theDir) {
         question = myDBQ.getRandomQuestion(myMaze.getCharName());
 
@@ -725,20 +812,6 @@ public class Display extends JPanel {
         //scoreField = new JTextField();
 
         myJTextAreaQuestion = new JTextArea();
-
-//        myJTextField.setBounds(90,474,616,54);
-//        myJTextField.setBounds(0, 54, 630, 54);
-//        myJTextField.setBackground(new Color(25,25,25));
-//        myJTextField.setForeground(new Color(255,165,0));
-//        myJTextField.setFont(new Font("Comic Sans MS",Font.BOLD,10));
-//        myJTextField.setBorder(BorderFactory.createBevelBorder(1));
-//        myJTextField.setHorizontalAlignment(JTextField.CENTER);
-//        myJTextField.setEditable(false);
-//        myJTextField.setText(door.getQuestion());
-//        myJTextArea.setLineWrap(true);
-//        myJTextArea.setWrapStyleWord(true);
-
-
 
         myJTextAreaQuestion.setBounds(0, 54, 630, 60);
         myJTextAreaQuestion.setBackground(new Color(25,25,25));
@@ -847,6 +920,11 @@ public class Display extends JPanel {
         //timer.stop();
     }
 
+    /**
+     * Action listeners for whatever answer the user chose in the multiple choice question. This method
+     * will check if what the user chose was true and is going to lock or unlock the doors.
+     * @param theDir The direction of the locked door (Direction.NORTH, Direction.EAST, etc.).
+     */
     public void addListenersOptions(Direction theDir) {
         optionA.setEnabled(true);
         optionB.setEnabled(true);
@@ -867,14 +945,14 @@ public class Display extends JPanel {
         optionA.addActionListener(e -> {
             //     System.out.println("HI");
             if (!question.getOptionA().equals(question.getAnswer())) {
-                timer.stop();
+                myTimer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
 
                 SoundPanel.playLockSound();
             } else {
                 //     System.out.println("Cool they got it right");
-                timer.stop();
+                myTimer.stop();
                 //scoreVal += countDownSec[0];
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
@@ -902,20 +980,20 @@ public class Display extends JPanel {
                 throw new RuntimeException(ex);
             }
 
-            timer = null;
+            myTimer = null;
         });
 
         optionB.addActionListener(e -> {
             //    System.out.println("HI");
             if (!question.getOptionB().equals(question.getAnswer())) {
-                timer.stop();
+                myTimer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
 
                 SoundPanel.playLockSound();
             } else {
                 //    System.out.println("Cool they got it right");
-                timer.stop();
+                myTimer.stop();
               //  scoreVal += countDownSec[0];
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
@@ -943,7 +1021,7 @@ public class Display extends JPanel {
                 throw new RuntimeException(ex);
             }
 
-            timer = null;
+            myTimer = null;
 
 
         });
@@ -951,14 +1029,14 @@ public class Display extends JPanel {
         optionC.addActionListener(e -> {
             //   System.out.println("HI");
             if (!question.getOptionC().equals(question.getAnswer())) {
-                timer.stop();
+                myTimer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
 
                 SoundPanel.playLockSound();
             } else {
                 //      System.out.println("Cool they got it right");
-                timer.stop();
+                myTimer.stop();
                 //scoreVal += countDownSec[0];
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
@@ -986,20 +1064,20 @@ public class Display extends JPanel {
                 throw new RuntimeException(ex);
             }
 
-            timer = null;
+            myTimer = null;
         });
 
         optionD.addActionListener(e -> {
             //     System.out.println("HI");
             if (!question.getOptionD().equals(question.getAnswer())) {
-                timer.stop();
+                myTimer.stop();
                 theDoor.setForeverLocked(true);
                 myMaze.lockingDoors(theDir);
 
                 SoundPanel.playLockSound();
             } else {
                 //       System.out.println("Cool they got it right");
-                timer.stop();
+                myTimer.stop();
                 //scoreVal += countDownSec[0];
                 myMaze.setScore(myMaze.getScore() + countDownSec[0]);
                 //scoreField.setText("Score: " + scoreVal);
@@ -1027,15 +1105,16 @@ public class Display extends JPanel {
                 throw new RuntimeException(ex);
             }
 
-            timer = null;
+            myTimer = null;
         });
 
 //        timer.stop();
     }
 
-
-
-
+    /**
+     * Drawing the map and showing where the user is on the map.
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     public void paintComponent (Graphics g) {
 //        JPanel mapPanel = new JPanel();
@@ -1084,6 +1163,13 @@ public class Display extends JPanel {
         }
     }
 
+    /**
+     * Draws the locked doors on the maze map.
+     *
+     * @param g The graphics context to draw on.
+     * @throws IOException        If an I/O error occurs while loading images.
+     * @throws InterruptedException If the thread is interrupted while waiting.
+     */
     void drawLock(Graphics g) throws IOException, InterruptedException {
         Graphics2D g2d = (Graphics2D) g;
 
@@ -1125,14 +1211,28 @@ public class Display extends JPanel {
         drawRoomBox(g);
     }
 
+    /**
+     * Increases the remaining time on the countdown timer.
+     */
     public void addTime() {
         countDownSec[0] += 6;
     }
 
+    /**
+     * Retrieves the countdown timer instance.
+     *
+     * @return The countdown timer.
+     */
     public Timer getTimer() {
-        return timer;
+        return myTimer;
     }
 
+    /**
+     * Checks if the game has ended and takes appropriate actions.
+     *
+     * @throws IOException        If an I/O error occurs.
+     * @throws InterruptedException If the thread is interrupted.
+     */
     public void checkEndGame() throws IOException, InterruptedException {
         if (myMaze.gameFinished()) {
             SoundPanel.playWinSound();
@@ -1158,7 +1258,7 @@ public class Display extends JPanel {
 
             setButtonsInvisible = true;
 
-
+            TriviaMazeView.turnOffSave();
 
             leaderboard();
 
@@ -1184,6 +1284,11 @@ public class Display extends JPanel {
         //repaint();
     }
 
+    /**
+     * Draws the game's room boxes and elements.
+     *
+     * @param g The Graphics object for drawing.
+     */
     void drawRoomBox(Graphics g) throws IOException, InterruptedException {
 
 //        boolean setButtonsInvisible = false;
@@ -1220,7 +1325,12 @@ public class Display extends JPanel {
     }
 
 
-
+    /**
+     * Reads the leaderboard data, updates it with the current player's score, and displays the leaderboard.
+     *
+     * @throws IOException        If an I/O error occurs.
+     * @throws InterruptedException If the thread is interrupted.
+     */
     public void leaderboard () throws IOException, IOException, InterruptedException {
 
         int numLeaders = 1;
@@ -1346,8 +1456,11 @@ public class Display extends JPanel {
         //System.out.println("Is this getting called?");
     }
 
-
-
+    /**
+     * Draws the area where the question is displayed and the associated elements.
+     *
+     * @param g The Graphics object for drawing.
+     */
     void drawQuestionArea(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.CYAN);
@@ -1367,6 +1480,11 @@ public class Display extends JPanel {
         displayRoomNumber(); //a jlabel that will display what room we're in.
     }
 
+    /**
+     * Draws the stool where the DeadPool icon is placed.
+     *
+     * @param g The Graphics object for drawing.
+     */
     void drawDeadpoolStool(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.CYAN);
@@ -1374,6 +1492,9 @@ public class Display extends JPanel {
         g2d.drawRect(370, 399, 50, 10);
     }
 
+    /**
+     * Displays the room number where the player is currently located.
+     */
     public void displayRoomNumber() {
         myJTextRoom = new JLabel();
         myJTextRoom.setBounds(425, 36, 360, 31);
@@ -1389,7 +1510,7 @@ public class Display extends JPanel {
      * Used to eliminate redundancy in code.
      */
     //TODO fix me
-    public void turnDoorButtonsOFF() {
+    private void turnDoorButtonsOFF() {
         myEastDoor.setEnabled(false);
         myEastDoor.setBackground(Color.GRAY);
         myEastDoor.setOpaque(true);
@@ -1412,7 +1533,7 @@ public class Display extends JPanel {
      * and its listeners. Used to eliminate redundancy in code.
      */
     //TODO fix me
-    public void repeat() {
+    private void repeat() {
         createNorthDoor();
         createEastDoor();
         createWestDoor();

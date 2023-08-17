@@ -2,15 +2,8 @@
 144 W
 143 Tom
 110 L
+101 Alan
+100 testsave
 83 L
 79 Alan
-38 TomL
-30 L
-27 L
-22 W
-20 L
-19 L
-18 test2
-15 A
-10 Alan
-5 A
+78 W Alan
