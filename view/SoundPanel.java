@@ -4,6 +4,9 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Manages playing different sounds in the game.
+ */
 public class SoundPanel {
 
     public static Clip backgroundMusic;
@@ -13,6 +16,11 @@ public class SoundPanel {
     private static Clip soundClip;
 
 
+    /**
+     * Plays the background music from the specified file path.
+     *
+     * @param filePath The file path of the background music.
+     */
     public static void playBackgroundMusic(String filePath) {
         try {
             File audioFile = new File(filePath);
@@ -39,18 +47,30 @@ public class SoundPanel {
         }
     }
 
+    /**
+     * Plays the sound for a correct answer.
+     */
     public static void playCorrectAnswerSound() {
         playSound("CorrectAnswer.wav");
     }
 
+    /**
+     * Plays the sound for locking/unlocking doors.
+     */
     public static void playLockSound() {
         playSound("LockSound.wav");
     }
 
+    /**
+     * Plays the sound for winning the game.
+     */
     public static void playWinSound() {
         playSound("Winner.wav");
     }
 
+    /**
+     * Plays the sound for losing the game.
+     */
     public static void playLoseSound() {
         playSound("Loser.wav");
     }
@@ -69,10 +89,16 @@ public class SoundPanel {
         }
     }
 
+    /**
+     * Stops correct/incorrect/win/lose music.
+     */
     public static void stopMusic() {
         soundClip.stop();
     }
 
+    /**
+     * Stops the background music if it's currently playing.
+     */
     public static void stopBackgroundMusic() {
         if (backgroundMusic != null && backgroundMusic.isRunning()) {
             backgroundMusic.stop();
