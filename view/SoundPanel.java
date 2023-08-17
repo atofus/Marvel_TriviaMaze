@@ -1,11 +1,3 @@
-/**
- * SoundPanel handles all the music and sound effects for the program.
- * @author Alan To
- * @author Aimee Tollett
- * @author Jordan Williams
- * @version Summer 2023
- */
-
 package view;
 
 import javax.sound.sampled.*;
@@ -13,7 +5,11 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Manages playing different sounds in the game.
+ * SoundPanel manages and handles all the music and sound effects for the program.
+ * @author Alan To
+ * @author Aimee Tollett
+ * @author Jordan Williams
+ * @version Summer 2023
  */
 public class SoundPanel {
 
