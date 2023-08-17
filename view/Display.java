@@ -697,8 +697,6 @@ public class Display extends JPanel {
     public void createTimer(int indexDir) {
         JLabel countField = new JLabel();
 
-        myMaze = Maze.getMyInstance();
-
         if (myMaze.getDiffLevel() == 1) {
             countDownSec[0] = 15;
             countField.setText("Time: 16");
