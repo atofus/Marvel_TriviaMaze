@@ -150,13 +150,14 @@ public class TriviaMazeView extends JFrame {
             try {
                 SoundPanel.stopMusic();
             } catch (NullPointerException npe) {
-
+                System.out.println("This is null: " + npe);
             }
 
             if (JOptionPane.showConfirmDialog(null, "Would you like to start a new game?",
                     "New Game!", JOptionPane.YES_NO_OPTION)
                     == JOptionPane.YES_OPTION) {
 
+                mySave.setVisible(true);
                 //panel = new Display();
 
                 //myMaze = null;
