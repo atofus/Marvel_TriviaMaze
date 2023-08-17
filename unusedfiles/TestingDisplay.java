@@ -1,4 +1,4 @@
-package view;
+package unusedfiles;
 
 import model.Direction;
 import model.Door;

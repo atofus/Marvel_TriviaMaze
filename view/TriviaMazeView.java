@@ -1,8 +1,6 @@
 package view;
 
 import controller.GUI;
-import extraFiles.MapPanel;
-import extraFiles.RoomPanel;
 import model.Maze;
 
 import javax.swing.*;

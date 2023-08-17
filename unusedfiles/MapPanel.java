@@ -1,4 +1,4 @@
-package extraFiles;
+package unusedfiles;
 
 import javax.swing.*;
 import java.awt.*;
