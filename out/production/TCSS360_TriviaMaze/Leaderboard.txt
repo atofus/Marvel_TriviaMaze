@@ -7,14 +7,3 @@
 83 L
 79 Alan
 78 W Alan
-58 L
-38 TomL
-30 L
-27 L
-22 W
-20 L
-19 L
-18 test2
-15 A
-10 Alan
-5 A

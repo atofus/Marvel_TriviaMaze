@@ -164,6 +164,7 @@ public class TriviaMazeView extends JFrame {
                 panel.characterSelect();
                 panel.getDiffLevel();
 
+                int diffLevel = myMaze.getDiffLevel();
 
 
                 //getContentPane().revalidate();
@@ -192,11 +193,21 @@ public class TriviaMazeView extends JFrame {
                     panel.deserialize("backup/spiderman.ser");
                 }
 
+                if (diffLevel == 1) {
+                    myMaze.setDiffLevel(1);
+                } else if (diffLevel == 2) {
+                    myMaze.setDiffLevel(2);
+                } else if (diffLevel == 3) {
+                    myMaze.setDiffLevel(3);
+                }
+
                 //panel.removeLocks();
 
                 if (myMaze.getDiffLevel() == 2 || myMaze.getDiffLevel() == 3) {
                     panel.randomLocks();
                 }
+
+                //System.out.println(myMaze.getDiffLevel());
 
                 getContentPane().revalidate();
                 getContentPane().repaint();
