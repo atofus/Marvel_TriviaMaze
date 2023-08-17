@@ -51,8 +51,6 @@ public class Display extends JPanel {
     private JLabel answer_labelD;
     private JLabel myJTextRoom;
 
-    //private int myQuestionNumber = 1;
-
     //TODO fix meeeeee!!!!!
     /**
      * Character selection related fields
