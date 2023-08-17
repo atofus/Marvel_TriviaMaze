@@ -1,3 +1,11 @@
+/**
+ * SoundPanel handles all the music and sound effects for the program.
+ * @author Alan To
+ * @author Aimee Tollett
+ * @author Jordan Williams
+ * @version Summer 2023
+ */
+
 package view;
 
 import javax.sound.sampled.*;
@@ -9,6 +17,9 @@ import java.io.IOException;
  */
 public class SoundPanel {
 
+    /**
+     * Sound clips.
+     */
     public static Clip backgroundMusic;
     public static Clip correctAnswerSound;
     public static Clip lockSound;
@@ -75,6 +86,10 @@ public class SoundPanel {
         playSound("Loser.wav");
     }
 
+    /**
+     * Plays correct/incorrect/winning/losing sound.
+     * @param filePath
+     */
     private static void playSound(String filePath) {
         try {
             File audioFile = new File(filePath);
