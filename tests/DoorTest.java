@@ -35,9 +35,9 @@ public class DoorTest {
 
     @Test
     void testUnlock() {
-        door.setLock(false);
+        door.setLock(true);
         door.unlock();
-        assertEquals(true, door.getLock());
+        assertEquals(false, door.getLock());
     }
 
     @Test
