@@ -20,9 +20,18 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.System.exit;
 
+/**
+ * The Display class represents the graphical user interface (GUI) for the game.
+ * @author Alan To
+ * @author Jordan Williams
+ * @author Aimee Tollett
+ * @version Summer 2023
+ */
 public class Display extends JPanel {
 
-    //maybe just connect panels
+    /**
+     * Fields for GUI components
+     */
     private JButton myNorthDoor;
     private JButton myWestDoor;
     private JButton mySouthDoor;
