@@ -1,68 +1,84 @@
 package view;
 
-import controller.GUI;
-import model.Maze;
-
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Collections;
 import java.util.Scanner;
-import java.util.TreeMap;
-
-import javax.sound.sampled.*;
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import model.Maze;
 
-//class will be used for the frame.
+/**
+ * Represents the main graphical user interface for the Trivia Maze game.
+ * This class sets up the frame, menu bar, and various UI components for the game.
+ * @author Alan To
+ * @author Jordan Williams
+ * @author Aimee Tollett
+ * @version Summer 2023
+ */
 public class TriviaMazeView extends JFrame {
 
-    private JMenuBar myJMenuBar;
-    private JMenu myFile;
+    /** JMenu item to save that goes under JMenu file. */
     private static JMenuItem mySave;
+
+    /** JMenu item to load that goes under JMenu file. */
     private static JMenuItem myLoad;
 
+    /** The JMenuBar in the frame. */
+    private JMenuBar myJMenuBar;
+
+    /** JMenu option that goes under JMenuBar. */
+    private JMenu myFile;
+
+
+    /** JMenu item that loads a new game under JMenu file. */
     private JMenuItem myNewGame;
+
+    /** JMenu item that exits the game under JMenu file. */
     private JMenuItem myExit;
+    /** JMenu option to help the user that goes under JMenuBar. */
     private JMenu myHelp;
+    /** JMenu item that tells about the creators of the game. */
     private JMenuItem myAbout;
+    /** JMenu item that tells the instructions of the game under JMenu Help. */
     private JMenuItem myInstructions;
-
+    /** JMenu option to show the user score. */
     private JMenu myScoreMenu;
-
+    /** Used to show what the user score is. */
     private JMenuItem myScore;
+    /** Used to show the leaderboard of previous scores. */
     private JMenuItem myLeaderBoard;
-
+    /** JMenu hint option to help user answer a question. */
     private JMenu myHintMenuItem;
+    /** JMenu item to delete an option. */
     private JMenuItem myHint;
+    /** JMenu item to increase the time on each question. */
     private JMenuItem myPotion;
-
-    private Display panel;
+    /** The panel that's being put into this frame. */
+    private Display myPanel;
+    /** The maze object that's being used. */
     private Maze myMaze;
 
-
+    /**
+     * Constructors that sets everything and puts everything.
+     */
     public TriviaMazeView() {
-        panel = new Display();
-        panel.setBackground(Color.BLACK);
-        panel.setLayout(null);
-        panel.setBounds(50, 47, 780, 785);
+        myPanel = new Display();
+        myPanel.setBackground(Color.BLACK);
+        myPanel.setLayout(null);
+        myPanel.setBounds(50, 47, 780, 785);
 
         myMaze = Maze.getMyInstance();
 
-        panel.setBackground(Color.BLACK);
-        panel.setLayout(null);
-        panel.setBounds(50, 47, 780, 785);
+        myPanel.setBackground(Color.BLACK);
+        myPanel.setLayout(null);
+        myPanel.setBounds(50, 47, 780, 785);
 
         this.getContentPane().setLayout(null); //to move panel bounds.
 
 
 
         //adding panel to frame
-        add(getContentPane().add(panel));
+        add(getContentPane().add(myPanel));
 
 
         //adding menu bar to frame.
@@ -78,10 +94,17 @@ public class TriviaMazeView extends JFrame {
         // frame.add(playingField);
     }
 
+    /**
+     * Used to turn off save JMenuItem.
+     */
     public static void turnOffSave() {
         mySave.setVisible(false);
     }
 
+    /**
+     * Sets up the action listeners for the various menu items in the Trivia Maze game.
+     * Each menu item's action is defined within this method.
+     */
     public void actionListeners() {
         mySave.addActionListener(e -> {
 
@@ -101,8 +124,8 @@ public class TriviaMazeView extends JFrame {
             }
 
             try {
-                panel.serialize(filename);
-            } catch (RuntimeException re) {
+                myPanel.serialize(filename);
+            } catch (final RuntimeException re) {
                 JOptionPane.showMessageDialog(null, "Make sure you save this game somewhere.");
             }
         });
@@ -110,14 +133,14 @@ public class TriviaMazeView extends JFrame {
         myLoad.addActionListener(e -> {
             try {
                 SoundPanel.stopMusic();
-            } catch (NullPointerException npe) {
+            } catch (final NullPointerException npe) {
 
             }
             mySave.setVisible(true);
 
             String filename = "";
-            String[] options = {"Game 1", "Game 2", "Game 3"};
-            int choice = JOptionPane.showOptionDialog(null,
+            final String[] options = {"Game 1", "Game 2", "Game 3"};
+            final int choice = JOptionPane.showOptionDialog(null,
                     "Which game would you like to load?", "Load Game",
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
                     null, options, null);
@@ -131,8 +154,8 @@ public class TriviaMazeView extends JFrame {
             }
 
             try {
-                panel.deserialize(filename);
-            } catch (RuntimeException re) {
+                myPanel.deserialize(filename);
+            } catch (final RuntimeException re) {
                 JOptionPane.showMessageDialog(null, "You can't load an empty game.");
             }
         });
@@ -147,7 +170,7 @@ public class TriviaMazeView extends JFrame {
 
             try {
                 SoundPanel.stopMusic();
-            } catch (NullPointerException npe) {
+            } catch (final NullPointerException npe) {
                 System.out.println("This is null: " + npe);
             }
 
@@ -157,12 +180,12 @@ public class TriviaMazeView extends JFrame {
 
                 mySave.setVisible(true);
 
-                panel.setButtonInvis(false);
+                myPanel.setButtonInvis(false);
 
-                panel.characterSelect();
-                panel.getDiffLevel();
+                myPanel.characterSelect();
+                myPanel.getDiffLevel();
 
-                int diffLevel = myMaze.getDiffLevel();
+                final int diffLevel = myMaze.getDiffLevel();
 
 
                 //getContentPane().revalidate();
@@ -179,16 +202,16 @@ public class TriviaMazeView extends JFrame {
 
                 if (myMaze.getCharName().equals("Black Widow")) {
                     //System.out.println("Black Widow");
-                    panel.deserialize("backup/blackwidow.ser");
+                    myPanel.deserialize("backup/blackwidow.ser");
                 } else if (myMaze.getCharName().equals("Captain America")) {
                     //System.out.println("Cap America");
-                    panel.deserialize("backup/capamerica.ser");
+                    myPanel.deserialize("backup/capamerica.ser");
                 } else if (myMaze.getCharName().equals("Loki")) {
                     //System.out.println("Loki");
-                    panel.deserialize("backup/loki.ser");
+                    myPanel.deserialize("backup/loki.ser");
                 } else if (myMaze.getCharName().equals("Spiderman")) {
                     //System.out.println("Spiderman");
-                    panel.deserialize("backup/spiderman.ser");
+                    myPanel.deserialize("backup/spiderman.ser");
                 }
 
                 if (diffLevel == 1) {
@@ -202,7 +225,7 @@ public class TriviaMazeView extends JFrame {
                 //panel.removeLocks();
 
                 if (myMaze.getDiffLevel() == 2 || myMaze.getDiffLevel() == 3) {
-                    panel.randomLocks();
+                    myPanel.randomLocks();
                 }
 
                 //System.out.println(myMaze.getDiffLevel());
@@ -222,12 +245,14 @@ public class TriviaMazeView extends JFrame {
         myScore.addActionListener(e -> {
 
             try {
-                panel.getTimer().stop();
-                String nameAndScore = "Your current score is " + myMaze.getScore() + " points.";
+                myPanel.getTimer().stop();
+                String nameAndScore = "Your current score is " + myMaze.getScore()
+                        + " points.";
                 JOptionPane.showMessageDialog(null, nameAndScore);
-                panel.getTimer().start();
+                myPanel.getTimer().start();
             } catch (NullPointerException npe) {
-                String nameAndScore = "Your current score is " + myMaze.getScore() + " points.";
+                final String nameAndScore = "Your current score is "
+                        + myMaze.getScore() + " points.";
                 JOptionPane.showMessageDialog(null, nameAndScore);
             }
 
@@ -244,14 +269,14 @@ public class TriviaMazeView extends JFrame {
 
         myHint.addActionListener(e -> {
             try {
-                panel.getTimer().stop();
-                panel.setHint(true);
+                myPanel.getTimer().stop();
+                myPanel.setHint(true);
 
-                panel.provideHint(panel.getQuestion());
+                myPanel.provideHint(myPanel.getQuestion());
 
-                panel.revalidate();
-                panel.repaint();
-                panel.getTimer().start();
+                myPanel.revalidate();
+                myPanel.repaint();
+                myPanel.getTimer().start();
             } catch (NullPointerException npe) {
                 JOptionPane.showMessageDialog(null, "Can't use a hint with no question.");
             }
@@ -269,13 +294,13 @@ public class TriviaMazeView extends JFrame {
             //System.out.println(myMaze.getNumPotions());
 
             try {
-                panel.getTimer().stop();
+                myPanel.getTimer().stop();
                 if (myMaze.getPotions() > 0) {
 
                     if (JOptionPane.showConfirmDialog(null, havePotions, "Potions!", JOptionPane.YES_NO_OPTION)
                             == JOptionPane.YES_OPTION) {
                         myMaze.setPotions(myMaze.getPotions() - 1);
-                        panel.addTime();
+                        myPanel.addTime();
                     }
 
                 } else {
@@ -283,7 +308,7 @@ public class TriviaMazeView extends JFrame {
                     JOptionPane.showMessageDialog(null, noPotions);
 
                 }
-                panel.getTimer().start();
+                myPanel.getTimer().start();
             } catch (NullPointerException nullPointer) {
                 JOptionPane.showMessageDialog(null, "You have " + myMaze.getPotions() + " potion(s).");
             }
@@ -310,14 +335,19 @@ public class TriviaMazeView extends JFrame {
                         the game is lost.""", "Rules", JOptionPane.INFORMATION_MESSAGE));
 
         myAbout.addActionListener(e -> JOptionPane.showMessageDialog(null,
-                "Created by: \n" +
-                        "-  Alan To \n" +
-                        "-  Aimee Tollett\n" +
-                        "-  Jordan Williams\n" +
-                        "Java Version: JavaSE-17 \n" +
-                        "Created in: August, 2023", "About", JOptionPane.INFORMATION_MESSAGE));
+                "Created by: \n"
+                        + "-  Alan To \n"
+                        + "-  Aimee Tollett\n"
+                        + "-  Jordan Williams\n"
+                        + "Java Version: JavaSE-17 \n"
+                        + "Created in: August, 2023", "About", JOptionPane.INFORMATION_MESSAGE));
     }
 
+    /**
+     * Reads the leaderboard data from a file and displays it to the user.
+     *
+     * @throws FileNotFoundException If the leaderboard file is not found.
+     */
     public void readInLeader() throws FileNotFoundException {
         int numLeaders = 1;
 
@@ -350,10 +380,10 @@ public class TriviaMazeView extends JFrame {
         }
 
         try {
-            panel.getTimer().stop();
+            myPanel.getTimer().stop();
             JOptionPane.showMessageDialog(null, sb.toString());
-            panel.getTimer().start();
-        } catch (NullPointerException npe) {
+            myPanel.getTimer().start();
+        } catch (final NullPointerException npe) {
             JOptionPane.showMessageDialog(null, sb.toString());
         }
 
@@ -363,7 +393,11 @@ public class TriviaMazeView extends JFrame {
     }
 
 
-
+    /**
+     * Creates and configures the menu bar for the Trivia Maze game.
+     *
+     * @return The configured JMenuBar instance.
+     */
     public JMenuBar createMenu() {
         myJMenuBar = new JMenuBar();
         myFile = new JMenu("File");

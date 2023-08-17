@@ -1,35 +1,40 @@
 package controller;
 
-import model.Maze;
-
-import view.SoundPanel;
-
-import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import javax.swing.*;
+import view.SoundPanel;
 import view.TriviaMazeView;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
-
+/**
+ * The GUI class sets up the main application frame and
+ * handles the initialization of the Trivia Maze game.
+ * @author Alan To
+ * @author Jordan Williams
+ * @author Aimee Tollett
+ * @version Summer 2023
+ */
 public class GUI {
 
-    private Clip backgroundMusic;
+    /** The frame width. */
+    private static final int MY_WIDTH = 900;
+    /** The frame height length. */
+    private static final int MY_HEIGHT = 900;
 
-    public static void main (String [] args) {
+    /**
+     * Main method to start the Trivia Maze application.
+     *
+     * @param theArgs Command-line arguments (not used).
+     */
+    public static void main(final String [] theArgs) {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
 
-                TriviaMazeView frame = new TriviaMazeView();
+                final TriviaMazeView frame = new TriviaMazeView();
                 frame.setTitle("Trivia Maze");
 
-                frame.setBounds(0, 0, 900, 900);
+                frame.setBounds(0, 0, MY_WIDTH, MY_HEIGHT);
                 frame.setResizable(false);
                 frame.setVisible(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,34 +48,4 @@ public class GUI {
         });
     }
 
-    public static void playBackgroundMusic(String filePath) {
-        try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-            AudioFormat format = audioStream.getFormat();
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
-            Clip backgroundMusic = (Clip) AudioSystem.getLine(info);
-            backgroundMusic.open(audioStream);
-            backgroundMusic.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public GUI() {
-        Maze maze = Maze.getMyInstance();
-    }
-
-//    public void paintMaze(Graphics g) {
-//        int boxWidth = 30;
-//        int boxHeight = 30;
-//
-//        for (int currentX = 0; currentX < )
-//    }
-
-//    @Override
-//    public void propertyChange(PropertyChangeEvent evt) {
-//
-//    }
 }

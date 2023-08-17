@@ -1,7 +1,5 @@
 package model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Random;
@@ -41,15 +39,12 @@ public class Maze implements Serializable {
     /** The question number that the user is on. */
     private int myQuestionNumber;
 
-    /** Property change support to see if something has changed in variables. */
-    private final PropertyChangeSupport myPcs;
 
 
     /**
      * Constructor that starts the game.
      */
     public Maze() {
-        myPcs = new PropertyChangeSupport(this);
         startGame();
     }
 
@@ -106,9 +101,6 @@ public class Maze implements Serializable {
         return myGameStatus;
     }
 
-    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-        myPcs.addPropertyChangeListener(theListener);
-    }
 
     /**
      * Sets the number of potions the player has.
@@ -373,9 +365,6 @@ public class Maze implements Serializable {
                 && !myMaze[myX][myY].getDoor(Room.WEST_INDEX).getLock()) {
             setLocation(myX - 1, myY);
         }
-
-        myPcs.firePropertyChange("ChangeX", myX, myX);
-        myPcs.firePropertyChange("ChangeY", myY, myY);
     }
 
     public boolean canMoveDirection(final Direction theDir) {
